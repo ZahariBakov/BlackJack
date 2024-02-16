@@ -59,7 +59,9 @@ private:
 		* betStrTexture,
 		* betTexture,
 		* hitBtnTexture,
-		* stayBtnTexture;
+		* stayBtnTexture,
+		* dealerScoreTexture,
+		* dealerScoreStrTexture;
 
 	/// Rectangles for positionong textures
 	SDL_Rect dealerRect,
@@ -71,7 +73,9 @@ private:
 		betStrRect,
 		betRect,
 		hitBtnRect,
-		stayBtnRect;
+		stayBtnRect,
+		dealerScoreRect,
+		dealerScoreStrRect;
 
 	int mouseDownX, mouseDownY;/*!< Mouse coordinates*/
 	CardDeck mainDeck;

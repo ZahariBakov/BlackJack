@@ -25,6 +25,8 @@ Game::Game() {
 	Game::betStrTexture = NULL;
 	Game::hitBtnTexture = NULL;
 	Game::stayBtnTexture = NULL;
+	Game::dealerScoreTexture = NULL;
+	Game::dealerScoreStrTexture = NULL;
 
 	/// Initialize rectangles
 	Game::dealerRect = { 0, 0, 0, 0 };
@@ -37,6 +39,8 @@ Game::Game() {
 	Game::betStrRect = { 0, 0, 0, 0 }; 
 	Game::hitBtnRect = { 0, 0, 0, 0 };
 	Game::stayBtnRect = { 0, 0, 0, 0 };
+	Game::dealerScoreRect = { 0, 0, 0, 0 };
+	Game::dealerScoreStrRect = { 0, 0, 0, 0 };
 
 	Game::mouseDownX = Game::mouseDownY = 0;/*!< Initialize mouse coordinates to 0*/
 }
@@ -157,24 +161,31 @@ bool Game::ttf_init() {
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Score: ", { 255, 255, 255, 255 });
 	scoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	dealerScoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	/// Get the player's score and convert the value to a string.
-	player->getScore();
 	t = std::to_string(player->getScore());
 	char const* scoreStr = t.c_str();
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, scoreStr, { 255, 255, 255, 255 });
 	scoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
+	/// Get the dealer's score and convert to a string
+	t = std::to_string(dealer->getScore());
+	char const* dealerScoreStr = t.c_str();
+
+	tempSurfaceText = TTF_RenderText_Blended(font2, dealerScoreStr, { 255, 255, 255, 255 });
+	dealerScoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Current Bet: $", { 255, 255, 255, 255 });
 	betStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	/// Convert the player's bet amount to a string for display.
-	//t = std::to_string(player->getBet());
-	//char const* betStr = t.c_str();
+	t = std::to_string(player->getBet());
+	char const* betStr = t.c_str();
 
-	//tempSurfaceText = TTF_RenderText_Blended(font2, betStr, { 255, 255, 255, 255 });
-	//betTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	tempSurfaceText = TTF_RenderText_Blended(font2, betStr, { 255, 255, 255, 255 });
+	betTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font3, "HIT", { 255, 255, 255, 255 });
 	hitBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
@@ -205,9 +216,15 @@ bool Game::ttf_init() {
 	SDL_QueryTexture(scoreStrTexture, 0, 0, &tw, &th);
 	scoreStrRect = { 10, wh / 2 + 50, tw, th };
 
+	SDL_QueryTexture(dealerScoreStrTexture, 0, 0, &tw, &th);
+	dealerScoreStrRect = { 10, 30, tw, th };
+
 	// Score value
 	SDL_QueryTexture(scoreTexture, 0, 0, &tw, &th);
 	scoreRect = { 70, wh / 2 + 50, tw, th };
+
+	SDL_QueryTexture(dealerScoreTexture, 0, 0, &tw, &th);
+	dealerScoreRect = { 70, 30, tw, th };
 
 	// Bet string
 	SDL_QueryTexture(betStrTexture, 0, 0, &tw, &th);
@@ -246,10 +263,6 @@ void Game::render() {
 
 	/// Drawing background and cards
 	TextureManager::Instance()->drawTexture("background", 0, 0, ww, wh, renderer);
-	//TextureManager::Instance()->drawTexture("firstdealerCard", 150, 10, 140, 190, renderer);
-	//TextureManager::Instance()->drawTexture("card-back", 180, 10, 140, 190, renderer);
-	//TextureManager::Instance()->drawTexture("firstPlayerCard", 180, wh / 2 + 20, 140, 190, renderer);
-	//TextureManager::Instance()->drawTexture("secondPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
 	TextureManager::Instance()->drawTexture("thirdPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
 
 	int x = 180;
@@ -288,6 +301,8 @@ void Game::render() {
 	SDL_RenderCopy(renderer, betTexture, NULL, &betRect);
 	SDL_RenderCopy(renderer, hitBtnTexture, NULL, &hitBtnRect);
 	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
+	SDL_RenderCopy(renderer, dealerScoreStrTexture, NULL, &dealerScoreStrRect);
+	SDL_RenderCopy(renderer, dealerScoreTexture, NULL, &dealerScoreRect);
 
 	SDL_RenderPresent(renderer);
 }
