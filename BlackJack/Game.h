@@ -9,6 +9,7 @@
 #include "TextureManager.h"
 #include "Player.h"
 #include "CardDeck.h"
+#include "Dealer.h"
 
 class Game {
 public:

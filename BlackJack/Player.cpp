@@ -7,7 +7,7 @@ Player::Player(CardDeck& deck) {
 	this->_money = 100000;
 	this->_bet = 100;
 
-	playerCards = new Card[2];
+	playerCards = new Card[11];
 	playerCards[0] = deck.dealCard();
 	playerCards[1] = deck.dealCard();
 

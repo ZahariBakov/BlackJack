@@ -5,6 +5,7 @@
 std::string thirdCardName;
 
 Player* player;
+Dealer* dealer;
 
 /// Default constructor
 Game::Game() {
@@ -65,6 +66,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 				Game::mainDeck.shuffle();
 
 				player = new Player(mainDeck);
+				dealer = new Dealer(mainDeck);
 
 				//Card firstDealerCard = mainDeck.dealCard();
 				//Card firstPlayerCard = mainDeck.dealCard();
@@ -232,12 +234,7 @@ bool Game::ttf_init() {
 	return true;
 }
 
-void Game::update() {
-	int ww, wh;
-	SDL_GetWindowSize(window, &ww, &wh);/*!< Get window size and store*/
-
-	
-}
+void Game::update() {}
 
 /// Render function
 void Game::render() {
@@ -249,8 +246,8 @@ void Game::render() {
 
 	/// Drawing background and cards
 	TextureManager::Instance()->drawTexture("background", 0, 0, ww, wh, renderer);
-	TextureManager::Instance()->drawTexture("firstdealerCard", 150, 10, 140, 190, renderer);
-	TextureManager::Instance()->drawTexture("card-back", 180, 10, 140, 190, renderer);
+	//TextureManager::Instance()->drawTexture("firstdealerCard", 150, 10, 140, 190, renderer);
+	//TextureManager::Instance()->drawTexture("card-back", 180, 10, 140, 190, renderer);
 	//TextureManager::Instance()->drawTexture("firstPlayerCard", 180, wh / 2 + 20, 140, 190, renderer);
 	//TextureManager::Instance()->drawTexture("secondPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
 	TextureManager::Instance()->drawTexture("thirdPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
@@ -268,7 +265,9 @@ void Game::render() {
 		TextureManager::Instance()->drawTexture(cardname, x, wh / 2 + 20, 140, 190, renderer);
 	}
 
-
+	TextureManager::Instance()->loadTexture(dealer->dealerCards[0].toStringSuit().c_str(), "firstdealerCard", renderer);
+	TextureManager::Instance()->drawTexture("firstdealerCard", 150, 10, 140, 190, renderer);
+	TextureManager::Instance()->drawTexture("card-back", 180, 10, 140, 190, renderer);
 
 	/// Drawing a line in the middle
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -349,7 +348,6 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	/// Check if Hit button is pressed
 	if ((xDown > hitBtnX && xDown < (hitBtnX + hitBtnW)) && (xUp > hitBtnX && xUp < (hitBtnX + hitBtnW)) &&
 		(yDown > hitBtnY && yDown < (hitBtnY + hitBtnH)) && (yUp > hitBtnY && yUp < (hitBtnY + hitBtnH))) {
-		//player->increaseCards();
 		std::cout << "HIT button is clicked" << std::endl;
 
 		return;
