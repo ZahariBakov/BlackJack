@@ -13,6 +13,7 @@ Game::Game() {
 	Game::renderer = NULL;
 
 	Game::running = true;
+	Game::stayClicked = false;
 
 	/// Initialize texture pointers
 	Game::dealerTexture = NULL;
@@ -27,6 +28,7 @@ Game::Game() {
 	Game::stayBtnTexture = NULL;
 	Game::dealerScoreTexture = NULL;
 	Game::dealerScoreStrTexture = NULL;
+	Game::minBetBtnTexture = NULL;
 
 	/// Initialize rectangles
 	Game::dealerRect = { 0, 0, 0, 0 };
@@ -41,6 +43,7 @@ Game::Game() {
 	Game::stayBtnRect = { 0, 0, 0, 0 };
 	Game::dealerScoreRect = { 0, 0, 0, 0 };
 	Game::dealerScoreStrRect = { 0, 0, 0, 0 };
+	Game::minBetBtnRect = { 0, 0, 0, 0 };
 
 	Game::mouseDownX = Game::mouseDownY = 0;/*!< Initialize mouse coordinates to 0*/
 }
@@ -71,33 +74,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
 				player = new Player(mainDeck);
 				dealer = new Dealer(mainDeck);
-
-				//Card firstDealerCard = mainDeck.dealCard();
-				//Card firstPlayerCard = mainDeck.dealCard();
-				//player->increaseCards();
-				//player->increaseScore(firstPlayerCard.getPoint());
-
-				//Card secondDealerCard = mainDeck.dealCard();
-				//Card secondPlayerCard = mainDeck.dealCard();
-				//player->increaseCards();
-				//player->increaseScore(secondPlayerCard.getPoint());
-
-				//Card thirdPlayerCard = mainDeck.dealCard();
-				//Card fourthPlayerCard = mainDeck.dealCard();
-				//Card fifthPlayerCard = mainDeck.dealCard();
 				
 				/// Load textures
 				TextureManager::Instance()->loadTexture("assets/table-background.jpg", "background", renderer);
 				TextureManager::Instance()->loadTexture("assets/cards/cardBack_blue3.png", "card-back", renderer);
-
-				//TextureManager::Instance()->loadTexture(firstDealerCard.toStringSuit().c_str(), "firstdealerCard", renderer);
-				//TextureManager::Instance()->loadTexture(secondDealerCard.toStringSuit().c_str(), "secondDealerCard", renderer);
-				//TextureManager::Instance()->loadTexture(firstPlayerCard.toStringSuit().c_str(), "firstPlayerCard", renderer);
-				//TextureManager::Instance()->loadTexture(secondPlayerCard.toStringSuit().c_str(), "secondPlayerCard", renderer);
-				//TextureManager::Instance()->loadTexture(thirdPlayerCard.toStringSuit().c_str(), "thirdPlayerCard", renderer);
-				//TextureManager::Instance()->loadTexture(fourthPlayerCard.toStringSuit().c_str(), "fourthPlayerCard", renderer);
-				//TextureManager::Instance()->loadTexture(fifthPlayerCard.toStringSuit().c_str(), "fifthPlayerCard", renderer);
-
 			}
 			else {
 				std::cout << "Renderer init failed!\n";
@@ -187,11 +167,15 @@ bool Game::ttf_init() {
 	tempSurfaceText = TTF_RenderText_Blended(font2, betStr, { 255, 255, 255, 255 });
 	betTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
+	/// Buttons
 	tempSurfaceText = TTF_RenderText_Blended(font3, "HIT", { 255, 255, 255, 255 });
 	hitBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font3, "STAY", { 255, 255, 255, 255 });
 	stayBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+
+	tempSurfaceText = TTF_RenderText_Blended(font3, "BET 100", { 255, 255, 255, 255 });
+	minBetBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	/// Query the dimensions of each texture and set corresponding rectangles for rendering.
 	int tw, th;
@@ -234,13 +218,18 @@ bool Game::ttf_init() {
 	SDL_QueryTexture(betTexture, 0, 0, &tw, &th);
 	betRect = { 125, wh / 2 + 70, tw, th };
 
+	/// Buttons
 	// Hit button
 	SDL_QueryTexture(hitBtnTexture, 0, 0, &tw, &th);
 	hitBtnRect = { 30, wh / 2 + 120, tw, th };
 
 	// Stay button
 	SDL_QueryTexture(stayBtnTexture, 0, 0, &tw, &th);
-	stayBtnRect = { 30, wh / 2 + 180, tw, th };
+	stayBtnRect = { 30, wh / 2 + 175, tw, th };
+
+	// bet button
+	SDL_QueryTexture(minBetBtnTexture, 0, 0, &tw, &th);
+	minBetBtnRect = { 30, wh / 2 + 230, tw, th };
 
 	/// Free resources allocated for temporary surfaces and fonts.
 	SDL_FreeSurface(tempSurfaceText);
@@ -288,21 +277,27 @@ void Game::render() {
 
 	/// Draw a buttons
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 115, 80, 40);
-	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 175, 100, 40);
+	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 170, 100, 40);
+	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 225, 130, 40);
 
 	/// Render texture on window
 	SDL_RenderCopy(renderer, dealerTexture, NULL, &dealerRect);
 	SDL_RenderCopy(renderer, playerTexture, NULL, &playerRect);
-	SDL_RenderCopy(renderer, moneyStrTexture, NULL, &moneyStrRect);
-	SDL_RenderCopy(renderer, moneyTexture, NULL, &moneyRect);
+
 	SDL_RenderCopy(renderer, scoreStrTexture, NULL, &scoreStrRect);
 	SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);
+	SDL_RenderCopy(renderer, dealerScoreStrTexture, NULL, &dealerScoreStrRect);
+	SDL_RenderCopy(renderer, dealerScoreTexture, NULL, &dealerScoreRect);
+
+	SDL_RenderCopy(renderer, moneyStrTexture, NULL, &moneyStrRect);
+	SDL_RenderCopy(renderer, moneyTexture, NULL, &moneyRect);
+	
 	SDL_RenderCopy(renderer, betStrTexture, NULL, &betStrRect);
 	SDL_RenderCopy(renderer, betTexture, NULL, &betRect);
 	SDL_RenderCopy(renderer, hitBtnTexture, NULL, &hitBtnRect);
 	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
-	SDL_RenderCopy(renderer, dealerScoreStrTexture, NULL, &dealerScoreStrRect);
-	SDL_RenderCopy(renderer, dealerScoreTexture, NULL, &dealerScoreRect);
+	SDL_RenderCopy(renderer, minBetBtnTexture, NULL, &minBetBtnRect);
+	
 
 	SDL_RenderPresent(renderer);
 }
@@ -360,7 +355,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	int hitBtnW = 80;
 	int hitBtnH = 40;
 
-	/// Check if Hit button is pressed
+	/// Check if Hit button is clicked
 	if ((xDown > hitBtnX && xDown < (hitBtnX + hitBtnW)) && (xUp > hitBtnX && xUp < (hitBtnX + hitBtnW)) &&
 		(yDown > hitBtnY && yDown < (hitBtnY + hitBtnH)) && (yUp > hitBtnY && yUp < (hitBtnY + hitBtnH))) {
 		std::cout << "HIT button is clicked" << std::endl;
@@ -374,10 +369,24 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	int stayBtnW = 100;
 	int stayBtnH = 40;
 
-	/// Check if Stay button is pressed
+	/// Check if Stay button is clicked
 	if ((xDown > stayBtnX && xDown < (stayBtnX + stayBtnW)) && (xUp > stayBtnX && xUp < (stayBtnX + stayBtnW)) &&
 		(yDown > stayBtnY && yDown < (stayBtnY + stayBtnH)) && (yUp > stayBtnY && yUp < (stayBtnY + stayBtnH))) {
 		std::cout << "STAY button is clicked" << std::endl;
+
+		return;
+	}
+
+	/// min Bet button coordinates and size
+	int minBetBtnX = 10;
+	int minBetBtnY = wh / 2 + 225;
+	int minBetBtnW = 130; 
+	int minBetBtnH = 40;
+
+	/// Check if min Bet button is clicked
+	if ((xDown > minBetBtnX && xDown < (minBetBtnX + minBetBtnW)) && (xUp > minBetBtnX && xUp < (minBetBtnX + minBetBtnW)) &&
+		(yDown > minBetBtnY && yDown < (minBetBtnY + minBetBtnH)) && (yUp > minBetBtnY && yUp < (minBetBtnY + minBetBtnH))) {
+		std::cout << "min BET button is clicked" << std::endl;
 
 		return;
 	}

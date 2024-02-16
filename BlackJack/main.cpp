@@ -4,7 +4,7 @@ Game* game = NULL;/*!< Initialize a game variable with value NULL*/
 
 ///Screen dimensions.
 const int WINDOW_WIDTH = 640;
-const int WINDOW_HEIGHT = 480;
+const int WINDOW_HEIGHT = 550;
 
 int main(int argc, char* argv[]) {
 	srand(time(0));   /*!< Generate random numbers*/

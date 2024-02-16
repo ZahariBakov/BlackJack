@@ -47,7 +47,7 @@ public:
 private:
 	SDL_Window* window = NULL;/*!< The game window*/
 	SDL_Renderer* renderer = NULL;/*!< The renderer for rendering graphics*/
-	bool running;/*!< Flag indicate if Hit button is clicked*/
+	bool running, stayClicked;
 
 	/// Textures
 	SDL_Texture* dealerTexture,
@@ -61,7 +61,8 @@ private:
 		* hitBtnTexture,
 		* stayBtnTexture,
 		* dealerScoreTexture,
-		* dealerScoreStrTexture;
+		* dealerScoreStrTexture,
+		* minBetBtnTexture;
 
 	/// Rectangles for positionong textures
 	SDL_Rect dealerRect,
@@ -75,7 +76,8 @@ private:
 		hitBtnRect,
 		stayBtnRect,
 		dealerScoreRect,
-		dealerScoreStrRect;
+		dealerScoreStrRect,
+		minBetBtnRect;
 
 	int mouseDownX, mouseDownY;/*!< Mouse coordinates*/
 	CardDeck mainDeck;
