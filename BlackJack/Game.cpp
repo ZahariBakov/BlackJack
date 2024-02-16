@@ -1,10 +1,10 @@
 #include "Game.h"
-#include "CardDeck.h"
 
 #include <string>
 
-//Player* player;/*!< Global player object*/
-CardDeck mainDeck;/*!< Create the fixed size deck*/
+std::string thirdCardName;
+
+Player* player;
 
 /// Default constructor
 Game::Game() {
@@ -61,36 +61,36 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 
 			if (renderer != 0) {
 				std::cout << "Renderer creation success!\n";
-				
-				mainDeck.shuffle();/*!< Shuffle the deck*/
 
-				//player = new Player(mainDeck);/*!< Create player object*/
+				Game::mainDeck.shuffle();
 
-				Card firstDealerCard = mainDeck.dealCard();
-				Card firstPlayerCard = mainDeck.dealCard();
+				player = new Player(mainDeck);
+
+				//Card firstDealerCard = mainDeck.dealCard();
+				//Card firstPlayerCard = mainDeck.dealCard();
 				//player->increaseCards();
 				//player->increaseScore(firstPlayerCard.getPoint());
 
-				Card secondDealerCard = mainDeck.dealCard();
-				Card secondPlayerCard = mainDeck.dealCard();
+				//Card secondDealerCard = mainDeck.dealCard();
+				//Card secondPlayerCard = mainDeck.dealCard();
 				//player->increaseCards();
 				//player->increaseScore(secondPlayerCard.getPoint());
 
-				Card thirdPlayerCard = mainDeck.dealCard();
-				Card fourthPlayerCard = mainDeck.dealCard();
-				Card fifthPlayerCard = mainDeck.dealCard();
+				//Card thirdPlayerCard = mainDeck.dealCard();
+				//Card fourthPlayerCard = mainDeck.dealCard();
+				//Card fifthPlayerCard = mainDeck.dealCard();
 				
 				/// Load textures
 				TextureManager::Instance()->loadTexture("assets/table-background.jpg", "background", renderer);
 				TextureManager::Instance()->loadTexture("assets/cards/cardBack_blue3.png", "card-back", renderer);
 
-				TextureManager::Instance()->loadTexture(firstDealerCard.toStringSuit().c_str(), "firstdealerCard", renderer);
-				TextureManager::Instance()->loadTexture(secondDealerCard.toStringSuit().c_str(), "secondDealerCard", renderer);
-				TextureManager::Instance()->loadTexture(firstPlayerCard.toStringSuit().c_str(), "firstPlayerCard", renderer);
-				TextureManager::Instance()->loadTexture(secondPlayerCard.toStringSuit().c_str(), "secondPlayerCard", renderer);
-				TextureManager::Instance()->loadTexture(thirdPlayerCard.toStringSuit().c_str(), "thirdPlayerCard", renderer);
-				TextureManager::Instance()->loadTexture(fourthPlayerCard.toStringSuit().c_str(), "fourthPlayerCard", renderer);
-				TextureManager::Instance()->loadTexture(fifthPlayerCard.toStringSuit().c_str(), "fifthPlayerCard", renderer);
+				//TextureManager::Instance()->loadTexture(firstDealerCard.toStringSuit().c_str(), "firstdealerCard", renderer);
+				//TextureManager::Instance()->loadTexture(secondDealerCard.toStringSuit().c_str(), "secondDealerCard", renderer);
+				//TextureManager::Instance()->loadTexture(firstPlayerCard.toStringSuit().c_str(), "firstPlayerCard", renderer);
+				//TextureManager::Instance()->loadTexture(secondPlayerCard.toStringSuit().c_str(), "secondPlayerCard", renderer);
+				//TextureManager::Instance()->loadTexture(thirdPlayerCard.toStringSuit().c_str(), "thirdPlayerCard", renderer);
+				//TextureManager::Instance()->loadTexture(fourthPlayerCard.toStringSuit().c_str(), "fourthPlayerCard", renderer);
+				//TextureManager::Instance()->loadTexture(fifthPlayerCard.toStringSuit().c_str(), "fifthPlayerCard", renderer);
 
 			}
 			else {
@@ -146,23 +146,23 @@ bool Game::ttf_init() {
 	moneyStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	/// Decrease the player's money by the amount of their bet and convert the updated money value to a char const*.
-	//player->getMoney();
-	//std::string t = std::to_string(player->getMoney());
-	//char const* playerMoneyToString = t.c_str();
+	player->getMoney();
+	std::string t = std::to_string(player->getMoney());
+	char const* playerMoneyToString = t.c_str();
 
-	//tempSurfaceText = TTF_RenderText_Blended(font2, playerMoneyToString, { 255, 255, 255, 255 });
-	//moneyTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	tempSurfaceText = TTF_RenderText_Blended(font2, playerMoneyToString, { 255, 255, 255, 255 });
+	moneyTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Score: ", { 255, 255, 255, 255 });
 	scoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	/// Get the player's score and convert the value to a string.
-	//player->getScore();
-	//t = std::to_string(player->getScore());
-	//char const* scoreStr = t.c_str();
+	player->getScore();
+	t = std::to_string(player->getScore());
+	char const* scoreStr = t.c_str();
 
-	//tempSurfaceText = TTF_RenderText_Blended(font2, scoreStr, { 255, 255, 255, 255 });
-	//scoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	tempSurfaceText = TTF_RenderText_Blended(font2, scoreStr, { 255, 255, 255, 255 });
+	scoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Current Bet: $", { 255, 255, 255, 255 });
 	betStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
@@ -232,6 +232,13 @@ bool Game::ttf_init() {
 	return true;
 }
 
+void Game::update() {
+	int ww, wh;
+	SDL_GetWindowSize(window, &ww, &wh);/*!< Get window size and store*/
+
+	
+}
+
 /// Render function
 void Game::render() {
 	//SDL_SetRenderDrawColor(renderer, 0, 153, 0, 255); // base table color
@@ -244,20 +251,24 @@ void Game::render() {
 	TextureManager::Instance()->drawTexture("background", 0, 0, ww, wh, renderer);
 	TextureManager::Instance()->drawTexture("firstdealerCard", 150, 10, 140, 190, renderer);
 	TextureManager::Instance()->drawTexture("card-back", 180, 10, 140, 190, renderer);
-	TextureManager::Instance()->drawTexture("firstPlayerCard", 180, wh / 2 + 20, 140, 190, renderer);
-	TextureManager::Instance()->drawTexture("secondPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
+	//TextureManager::Instance()->drawTexture("firstPlayerCard", 180, wh / 2 + 20, 140, 190, renderer);
+	//TextureManager::Instance()->drawTexture("secondPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
+	TextureManager::Instance()->drawTexture("thirdPlayerCard", 210, wh / 2 + 20, 140, 190, renderer);
 
-	//if (player->getNumberOfCards() > 2) {
-	//	TextureManager::Instance()->drawTexture("thirdPlayerCard", 240, wh / 2 + 20, 140, 190, renderer);
-	//}
+	int x = 180;
+	std::string cardname = "player";
 
-	//if (player->getNumberOfCards() >  3) {
-	//	TextureManager::Instance()->drawTexture("fourthPlayerCard", 270, wh / 2 + 20, 140, 190, renderer);
-	//}
+	for (int i = 0; i < player->numberOfCards; ++i) {
+		if (i > 0) {
+			x += i * 30;
+		}
+		cardname += std::to_string(i);
 
-	//if (player->getNumberOfCards() > 4) {
-	//	TextureManager::Instance()->drawTexture("fifthPlayerCard", 300, wh / 2 + 20, 140, 190, renderer);
-	//}
+		TextureManager::Instance()->loadTexture(player->playerCards[i].toStringSuit().c_str(), cardname, renderer);
+		TextureManager::Instance()->drawTexture(cardname, x, wh / 2 + 20, 140, 190, renderer);
+	}
+
+
 
 	/// Drawing a line in the middle
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -268,21 +279,18 @@ void Game::render() {
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 175, 100, 40);
 
 	/// Render texture on window
-	SDL_RenderCopy(renderer, dealerTexture,   NULL, &dealerRect);
-	SDL_RenderCopy(renderer, playerTexture,   NULL, &playerRect);
+	SDL_RenderCopy(renderer, dealerTexture, NULL, &dealerRect);
+	SDL_RenderCopy(renderer, playerTexture, NULL, &playerRect);
 	SDL_RenderCopy(renderer, moneyStrTexture, NULL, &moneyStrRect);
-	SDL_RenderCopy(renderer, moneyTexture,    NULL, &moneyRect);
+	SDL_RenderCopy(renderer, moneyTexture, NULL, &moneyRect);
 	SDL_RenderCopy(renderer, scoreStrTexture, NULL, &scoreStrRect);
-	SDL_RenderCopy(renderer, scoreTexture,    NULL, &scoreRect);
-	SDL_RenderCopy(renderer, betStrTexture,   NULL, &betStrRect);
-	SDL_RenderCopy(renderer, betTexture,      NULL, &betRect);
-	SDL_RenderCopy(renderer, hitBtnTexture,   NULL, &hitBtnRect);
-	SDL_RenderCopy(renderer, stayBtnTexture,  NULL, &stayBtnRect);
+	SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);
+	SDL_RenderCopy(renderer, betStrTexture, NULL, &betStrRect);
+	SDL_RenderCopy(renderer, betTexture, NULL, &betRect);
+	SDL_RenderCopy(renderer, hitBtnTexture, NULL, &hitBtnRect);
+	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
 
 	SDL_RenderPresent(renderer);
-}
-
-void Game::update() {
 }
 
 /// Handle user events

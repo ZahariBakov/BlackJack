@@ -12,6 +12,8 @@ CardDeck::CardDeck() {
 			++idx;
 		}
 	}
+
+	std::cout << "Deck is created" << std::endl;
 }
 
 /// Return current card
@@ -20,11 +22,12 @@ Card CardDeck::dealCard() {
 	if (this->_currentCard == 52) {
 		this->shuffle();
 		this->_currentCard = 0;
-		std::cout << "Current card of deck is: " << _currentCard << std::endl;
 	}
 
-	Card dealCard = this->_allCards[this->_currentCard];
-	this->_currentCard++;
+	Card dealCard = _allCards[_currentCard];
+	_currentCard++;
+
+	std::cout << "Deal card " << dealCard.getCardSuit() << " " << dealCard.getCardRank() << std::endl;
 
 	return dealCard;
 }
@@ -38,4 +41,6 @@ void CardDeck::shuffle() {
 		this->_allCards[j] = this->_allCards[y];
 		this->_allCards[y] = tempCard;
 	}
+
+	std::cout << "Deck is shuffle" << std::endl;
 }

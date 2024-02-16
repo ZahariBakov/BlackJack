@@ -7,7 +7,8 @@
 #include <SDL_image.h>
 
 #include "TextureManager.h"
-//#include "Player.h"
+#include "Player.h"
+#include "CardDeck.h"
 
 class Game {
 public:
@@ -34,8 +35,8 @@ public:
 	 */
 	bool ttf_init();
 
-	void render();/*!< Render the game*/
 	void update();/*!< Update the game state*/
+	void render();/*!< Render the game*/
 	void handleEvents();/*!< Handle user events*/
 	void clean();/*!< Cleans up resources and shuts down SDL.*/
 
@@ -72,5 +73,5 @@ private:
 		stayBtnRect;
 
 	int mouseDownX, mouseDownY;/*!< Mouse coordinates*/
-
+	CardDeck mainDeck;
 };

@@ -6,11 +6,19 @@
 Player::Player(CardDeck& deck) {
 	this->_money = 100000;
 	this->_bet = 100;
-	
+
+	playerCards = new Card[2];
 	playerCards[0] = deck.dealCard();
 	playerCards[1] = deck.dealCard();
-	_numberOfCards = 2;
+
+	numberOfCards = 2;
 	this->_score = playerCards[0].getPoint() + playerCards[1].getPoint();
+
+	std::cout << "Player is created" << std::endl;
+}
+
+Player::~Player() {
+	delete[] playerCards;
 }
 
 /// Function that give access to player's money to outside world
@@ -26,10 +34,6 @@ int Player::getScore() const {
 /// Function that give access to player's bet to outside world
 int Player::getBet() const {
 	return this->_bet;
-}
-
-int Player::getNumberOfCards() const {
-	return this->_numberOfCards;
 }
 
 /// Function that adds profit to the plaeyr's current money
@@ -53,11 +57,6 @@ void Player::increaseScore(int points) {
 	std::cout << "Player Score is: " << _score << " after increase with " << points << std::endl;
 }
 
-void Player::addCard(Card currCard) {
-	this->playerCards.push_back(currCard);
-	this->_score += currCard.getPoint();
-}
-
 /// Function that sets the player's bet to either 100 or 1000 based on the boolean parameter
 void Player::setBet(bool big) {
 	if (big == true) {
@@ -66,8 +65,4 @@ void Player::setBet(bool big) {
 	else {
 		this->_bet = 100;
 	}
-}
-
-void Player::increaseCards() {
-	this->_numberOfCards++;
 }
