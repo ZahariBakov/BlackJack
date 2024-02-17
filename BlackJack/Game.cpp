@@ -271,7 +271,7 @@ void Game::render() {
 
 		for (int i = 0; i < player->numberOfCards; ++i) {
 			if (i > 0) {
-				x += i * 30;
+				x = 180 + (i * 30);
 			}
 			cardname += std::to_string(i);
 
@@ -376,6 +376,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > hitBtnX && xDown < (hitBtnX + hitBtnW)) && (xUp > hitBtnX && xUp < (hitBtnX + hitBtnW)) &&
 		(yDown > hitBtnY && yDown < (hitBtnY + hitBtnH)) && (yUp > hitBtnY && yUp < (hitBtnY + hitBtnH))) {
 		std::cout << "HIT button is clicked" << std::endl;
+		player->addCard(mainDeck);
 
 		return;
 	}

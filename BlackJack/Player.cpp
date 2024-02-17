@@ -57,6 +57,13 @@ void Player::increaseScore(int points) {
 	std::cout << "Player Score is: " << _score << " after increase with " << points << std::endl;
 }
 
+void Player::addCard(CardDeck& deck) {
+	playerCards[numberOfCards] = deck.dealCard();
+	this->_score += playerCards[numberOfCards].getPoint();
+	numberOfCards++;
+	std::cout << "Player add new card" << std::endl;
+}
+
 /// Function that sets the player's bet to either 100 or 1000 based on the boolean parameter
 void Player::setBet(bool big) {
 	if (big == true) {
