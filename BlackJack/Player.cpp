@@ -7,7 +7,7 @@ Player::Player(CardDeck& deck) {
 	this->_money = 100000;
 	this->_bet = 100;
 
-	playerCards = new Card[11];
+	playerCards = new Card[2];
 	playerCards[0] = deck.dealCard();
 	playerCards[1] = deck.dealCard();
 
@@ -44,11 +44,6 @@ void Player::increaseMoney(int profit) {
 /// Function that subtract loss from the player's current money
 void Player::decreaseMoney(int loss) {
 	this->_money -= loss;
-}
-
-/// Function that reset the player's score to 0 after end of a round
-void Player::resetScore() {
-	this->_score = 0;
 }
 
 /// Function that increase the player's score after opening a new card

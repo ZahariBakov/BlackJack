@@ -15,6 +15,7 @@ Game::Game() {
 	Game::running = true;
 	Game::stayClicked = false;
 	Game::isBet = false;
+	Game::isStay = false;
 
 	/// Initialize texture pointers
 	Game::dealerTexture = NULL;
@@ -252,7 +253,11 @@ bool Game::ttf_init() {
 	return true;
 }
 
-void Game::update() {}
+void Game::update() {
+	if (player->getScore() > 21) {
+		Game::isBet = false;
+	}
+}
 
 /// Render function
 void Game::render() {
@@ -267,21 +272,36 @@ void Game::render() {
 
 	if (Game::isBet) {
 		int x = 180;
-		std::string cardname = "player";
+		int y = 180;
+		std::string cardName = "p";
+		std::string dealerCardName = "d";
 
 		for (int i = 0; i < player->numberOfCards; ++i) {
 			if (i > 0) {
 				x = 180 + (i * 30);
 			}
-			cardname += std::to_string(i);
+			cardName += std::to_string(i);
 
-			TextureManager::Instance()->loadTexture(player->playerCards[i].toStringSuit().c_str(), cardname, renderer);
-			TextureManager::Instance()->drawTexture(cardname, x, wh / 2 + 20, 140, 190, renderer);
+			TextureManager::Instance()->loadTexture(player->playerCards[i].toStringSuit().c_str(), cardName, renderer);
+			TextureManager::Instance()->drawTexture(cardName, x, wh / 2 + 20, 140, 190, renderer);
 		}
 
-		TextureManager::Instance()->loadTexture(dealer->dealerCards[0].toStringSuit().c_str(), "firstdealerCard", renderer);
-		TextureManager::Instance()->drawTexture("firstdealerCard", 150, 10, 140, 190, renderer);
-		TextureManager::Instance()->drawTexture("card-back", 180, 10, 140, 190, renderer);
+		if (Game::isStay) {
+			for (int i = 0; i < dealer->numberOfCards; ++i) {
+				if (i > 0) {
+					y = 180 + (i * 30);
+				}
+				dealerCardName += std::to_string(i);
+
+				TextureManager::Instance()->loadTexture(dealer->dealerCards[i].toStringSuit().c_str(), dealerCardName, renderer);
+				TextureManager::Instance()->drawTexture(dealerCardName, y, 10, 140, 190, renderer);
+			}
+		}
+		else {
+			TextureManager::Instance()->loadTexture(dealer->dealerCards[0].toStringSuit().c_str(), "firstdealerCard", renderer);
+			TextureManager::Instance()->drawTexture("firstdealerCard", 180, 10, 140, 190, renderer);
+			TextureManager::Instance()->drawTexture("card-back", 210, 10, 140, 190, renderer);
+		}
 	}
 	
 	/// Drawing a line in the middle
@@ -376,7 +396,9 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > hitBtnX && xDown < (hitBtnX + hitBtnW)) && (xUp > hitBtnX && xUp < (hitBtnX + hitBtnW)) &&
 		(yDown > hitBtnY && yDown < (hitBtnY + hitBtnH)) && (yUp > hitBtnY && yUp < (hitBtnY + hitBtnH))) {
 		std::cout << "HIT button is clicked" << std::endl;
-		player->addCard(mainDeck);
+		if (Game::isBet && player->numberOfCards < 11) {
+			player->addCard(mainDeck);
+		}
 
 		return;
 	}
@@ -391,6 +413,9 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > stayBtnX && xDown < (stayBtnX + stayBtnW)) && (xUp > stayBtnX && xUp < (stayBtnX + stayBtnW)) &&
 		(yDown > stayBtnY && yDown < (stayBtnY + stayBtnH)) && (yUp > stayBtnY && yUp < (stayBtnY + stayBtnH))) {
 		std::cout << "STAY button is clicked" << std::endl;
+		if (Game::isBet) {
+			Game::isStay = true;
+		}
 
 		return;
 	}

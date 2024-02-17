@@ -16,7 +16,6 @@ public:
 
 	void increaseMoney(int profit);/*!< Function that increase the value of money*/
 	void decreaseMoney(int loss);/*!< Function that decrease the value of money*/
-	void resetScore();/*!< Function that set the value of score to 0*/
 	void setBet(bool big);/*!< Function that set the value of bet*/
 	void increaseScore(int points);/*!< Function that increase the value of score*/
 	void addCard(CardDeck& deck);

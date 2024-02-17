@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 	game = new Game();/*!< Create new game object*/
 
 	/// Call the init function of the game object
-	game->init("Come lose some money!!!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
+	game->init("Come and lose some money!!!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
 
 	/// Loop when the game is running
 	while (game->isRunning()) {
