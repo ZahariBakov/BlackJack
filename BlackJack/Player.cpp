@@ -65,4 +65,6 @@ void Player::setBet(bool big) {
 	else {
 		this->_bet = 100;
 	}
+
+	this->_money -= this->_bet;
 }

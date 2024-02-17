@@ -47,7 +47,7 @@ public:
 private:
 	SDL_Window* window = NULL;/*!< The game window*/
 	SDL_Renderer* renderer = NULL;/*!< The renderer for rendering graphics*/
-	bool running, stayClicked;
+	bool running, stayClicked, isBet;
 
 	/// Textures
 	SDL_Texture* dealerTexture,
