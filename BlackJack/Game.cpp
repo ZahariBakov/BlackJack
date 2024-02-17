@@ -29,6 +29,7 @@ Game::Game() {
 	Game::dealerScoreTexture = NULL;
 	Game::dealerScoreStrTexture = NULL;
 	Game::minBetBtnTexture = NULL;
+	Game::maxBetBtnTexture = NULL;
 
 	/// Initialize rectangles
 	Game::dealerRect = { 0, 0, 0, 0 };
@@ -44,6 +45,7 @@ Game::Game() {
 	Game::dealerScoreRect = { 0, 0, 0, 0 };
 	Game::dealerScoreStrRect = { 0, 0, 0, 0 };
 	Game::minBetBtnRect = { 0, 0, 0, 0 };
+	Game::maxBetBtnRect = { 0, 0, 0, 0 };
 
 	Game::mouseDownX = Game::mouseDownY = 0;/*!< Initialize mouse coordinates to 0*/
 }
@@ -177,6 +179,9 @@ bool Game::ttf_init() {
 	tempSurfaceText = TTF_RenderText_Blended(font3, "BET 100", { 255, 255, 255, 255 });
 	minBetBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
+	tempSurfaceText = TTF_RenderText_Blended(font3, "BET 1000", { 255, 255, 255, 255 });
+	maxBetBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+
 	/// Query the dimensions of each texture and set corresponding rectangles for rendering.
 	int tw, th;
 
@@ -231,6 +236,9 @@ bool Game::ttf_init() {
 	SDL_QueryTexture(minBetBtnTexture, 0, 0, &tw, &th);
 	minBetBtnRect = { 30, wh / 2 + 230, tw, th };
 
+	SDL_QueryTexture(maxBetBtnTexture, 0, 0, &tw, &th);
+	maxBetBtnRect = { 170, wh / 2 + 230, tw, th };
+
 	/// Free resources allocated for temporary surfaces and fonts.
 	SDL_FreeSurface(tempSurfaceText);
 	TTF_CloseFont(font1);
@@ -279,6 +287,7 @@ void Game::render() {
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 115, 80, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 170, 100, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 225, 130, 40);
+	TextureManager::Instance()->drawRecnatgle(renderer, 160, wh / 2 + 225, 130, 40);
 
 	/// Render texture on window
 	SDL_RenderCopy(renderer, dealerTexture, NULL, &dealerRect);
@@ -297,6 +306,7 @@ void Game::render() {
 	SDL_RenderCopy(renderer, hitBtnTexture, NULL, &hitBtnRect);
 	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
 	SDL_RenderCopy(renderer, minBetBtnTexture, NULL, &minBetBtnRect);
+	SDL_RenderCopy(renderer, maxBetBtnTexture, NULL, &maxBetBtnRect);
 	
 
 	SDL_RenderPresent(renderer);
@@ -309,7 +319,9 @@ void Game::handleEvents() {
 		int msx, msy;
 
 		switch (event.type) {
-		case SDL_QUIT: running = false; break;/*!< Quit if X is clicked */
+		case SDL_QUIT: /*!< Quit if X is clicked */
+			running = false;
+			break;
 		case SDL_MOUSEBUTTONDOWN: {/*!< Get mouse button press (left mouse button)*/
 			if (event.button.button == SDL_BUTTON_LEFT) {
 				SDL_GetMouseState(&msx, &msy);/*!< Get mouse coordinates*/
@@ -387,6 +399,20 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > minBetBtnX && xDown < (minBetBtnX + minBetBtnW)) && (xUp > minBetBtnX && xUp < (minBetBtnX + minBetBtnW)) &&
 		(yDown > minBetBtnY && yDown < (minBetBtnY + minBetBtnH)) && (yUp > minBetBtnY && yUp < (minBetBtnY + minBetBtnH))) {
 		std::cout << "min BET button is clicked" << std::endl;
+
+		return;
+	}
+
+	/// miax Bet button coordinates and size
+	int maxBetBtnX = 160;
+	int maxBetBtnY = wh / 2 + 225;
+	int maxBetBtnW = 130;
+	int maxBetBtnH = 40;
+
+	/// Check if max Bet button is clicked
+	if ((xDown > maxBetBtnX && xDown < (maxBetBtnX + maxBetBtnW)) && (xUp > maxBetBtnX && xUp < (maxBetBtnX + maxBetBtnW)) &&
+		(yDown > maxBetBtnY && yDown < (maxBetBtnY + maxBetBtnH)) && (yUp > maxBetBtnY && yUp < (maxBetBtnY + maxBetBtnH))) {
+		std::cout << "max BET button is clicked" << std::endl;
 
 		return;
 	}
