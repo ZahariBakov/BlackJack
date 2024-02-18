@@ -63,7 +63,9 @@ private:
 		* dealerScoreTexture,
 		* dealerScoreStrTexture,
 		* minBetBtnTexture,
-		* maxBetBtnTexture;
+		* maxBetBtnTexture,
+		* quitBtnTexture,
+		* okBtnTexture;
 
 	/// Rectangles for positionong textures
 	SDL_Rect dealerRect,
@@ -79,7 +81,9 @@ private:
 		dealerScoreRect,
 		dealerScoreStrRect,
 		minBetBtnRect,
-		maxBetBtnRect;
+		maxBetBtnRect,
+		quitBtnRect,
+		okBtnRect;
 
 	int mouseDownX, mouseDownY;/*!< Mouse coordinates*/
 	CardDeck mainDeck;

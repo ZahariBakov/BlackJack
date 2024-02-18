@@ -10,6 +10,7 @@ public:
 	~Dealer();
 
 	void increaseScore(int points);
+	void addCard(CardDeck& deck);
 
 	Card* dealerCards;
 

@@ -20,3 +20,10 @@ void Dealer::increaseScore(int points) {
 
 	std::cout << "Dealer score is: " << score << " after increase with " << points << std::endl;
 }
+
+void Dealer::addCard(CardDeck& deck) {
+	dealerCards[numberOfCards] = deck.dealCard();
+	this->score += dealerCards[numberOfCards].getPoint();
+	numberOfCards++;
+	std::cout << "Dealer add new card" << std::endl;
+}

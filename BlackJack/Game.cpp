@@ -32,6 +32,8 @@ Game::Game() {
 	Game::dealerScoreStrTexture = NULL;
 	Game::minBetBtnTexture = NULL;
 	Game::maxBetBtnTexture = NULL;
+	Game::quitBtnTexture = NULL;
+	Game::okBtnTexture = NULL;
 
 	/// Initialize rectangles
 	Game::dealerRect = { 0, 0, 0, 0 };
@@ -48,6 +50,8 @@ Game::Game() {
 	Game::dealerScoreStrRect = { 0, 0, 0, 0 };
 	Game::minBetBtnRect = { 0, 0, 0, 0 };
 	Game::maxBetBtnRect = { 0, 0, 0, 0 };
+	Game::quitBtnRect = { 0, 0, 0, 0 };
+	Game::okBtnRect = { 0, 0, 0, 0 };
 
 	Game::mouseDownX = Game::mouseDownY = 0;/*!< Initialize mouse coordinates to 0*/
 }
@@ -187,6 +191,12 @@ bool Game::ttf_init() {
 	tempSurfaceText = TTF_RenderText_Blended(font3, "BET 1000", { 255, 255, 255, 255 });
 	maxBetBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
+	tempSurfaceText = TTF_RenderText_Blended(font3, "QUIT", { 255, 255, 255, 255 });
+	quitBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+
+	tempSurfaceText = TTF_RenderText_Blended(font3, "OK", { 255, 255, 255, 255 });
+	okBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+
 	/// Query the dimensions of each texture and set corresponding rectangles for rendering.
 	int tw, th;
 
@@ -237,12 +247,21 @@ bool Game::ttf_init() {
 	SDL_QueryTexture(stayBtnTexture, 0, 0, &tw, &th);
 	stayBtnRect = { 30, wh / 2 + 175, tw, th };
 
-	// bet button
+	// min bet button
 	SDL_QueryTexture(minBetBtnTexture, 0, 0, &tw, &th);
 	minBetBtnRect = { 30, wh / 2 + 230, tw, th };
 
+	// max bet button
 	SDL_QueryTexture(maxBetBtnTexture, 0, 0, &tw, &th);
 	maxBetBtnRect = { 170, wh / 2 + 230, tw, th };
+
+	// quit button
+	SDL_QueryTexture(quitBtnTexture, 0, 0, &tw, &th);
+	quitBtnRect = { ww - 80, wh / 2 + 230, tw, th };
+
+	// ok button
+	SDL_QueryTexture(okBtnTexture, 0, 0, &tw, &th);
+	okBtnRect = { ww - 150, wh / 2 + 230, tw, th };
 
 	/// Free resources allocated for temporary surfaces and fonts.
 	SDL_FreeSurface(tempSurfaceText);
@@ -308,11 +327,13 @@ void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderDrawLine(renderer, 0, wh / 2, ww, wh / 2);
 
-	/// Draw a buttons
+	/// Draw a buttons rectangles
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 115, 80, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 170, 100, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 225, 130, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 160, wh / 2 + 225, 130, 40);
+	TextureManager::Instance()->drawRecnatgle(renderer, ww - 90, wh / 2 + 225, 80, 40);
+	TextureManager::Instance()->drawRecnatgle(renderer, ww - 155, wh / 2 + 225, 50, 40);
 
 	/// Render texture on window
 	SDL_RenderCopy(renderer, dealerTexture, NULL, &dealerRect);
@@ -332,6 +353,8 @@ void Game::render() {
 	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
 	SDL_RenderCopy(renderer, minBetBtnTexture, NULL, &minBetBtnRect);
 	SDL_RenderCopy(renderer, maxBetBtnTexture, NULL, &maxBetBtnRect);
+	SDL_RenderCopy(renderer, quitBtnTexture, NULL, &quitBtnRect);
+	SDL_RenderCopy(renderer, okBtnTexture, NULL, &okBtnRect);
 	
 
 	SDL_RenderPresent(renderer);
@@ -440,7 +463,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 		return;
 	}
 
-	/// miax Bet button coordinates and size
+	/// max Bet button coordinates and size
 	int maxBetBtnX = 160;
 	int maxBetBtnY = wh / 2 + 225;
 	int maxBetBtnW = 130;
@@ -454,6 +477,34 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 			Game::isBet = true;
 			player->setBet(true);
 		}
+
+		return;
+	}
+
+	/// quit button coordinates and size
+	int quitBetBtnX = ww - 90;
+	int quitBetBtnY = wh / 2 + 225;
+	int quitBetBtnW = 80;
+	int quitBetBtnH = 40;
+
+	/// Check if quit button is clicked
+	if ((xDown > quitBetBtnX && xDown < (quitBetBtnX + quitBetBtnW)) && (xUp > quitBetBtnX && xUp < (quitBetBtnX + quitBetBtnW)) &&
+		(yDown > quitBetBtnY && yDown < (quitBetBtnY + quitBetBtnH)) && (yUp > quitBetBtnY && yUp < (quitBetBtnY + quitBetBtnH))) {
+		std::cout << "quit button is clicked" << std::endl;
+
+		return;
+	}
+
+	/// ok button coordinates and size
+	int okBetBtnX = ww - 155;
+	int okBetBtnY = wh / 2 + 225;
+	int okBetBtnW = 50;
+	int okBetBtnH = 40;
+
+	/// Check if ok button is clicked
+	if ((xDown > okBetBtnX && xDown < (okBetBtnX + okBetBtnW)) && (xUp > okBetBtnX && xUp < (okBetBtnX + okBetBtnW)) &&
+		(yDown > okBetBtnY && yDown < (okBetBtnY + okBetBtnH)) && (yUp > okBetBtnY && yUp < (okBetBtnY + okBetBtnH))) {
+		std::cout << "ok button is clicked" << std::endl;
 
 		return;
 	}
