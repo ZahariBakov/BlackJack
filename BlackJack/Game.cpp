@@ -13,9 +13,9 @@ Game::Game() {
 	Game::renderer = NULL;
 
 	Game::running = true;
-	Game::stayClicked = false;
 	Game::isBet = false;
 	Game::isStay = false;
+	Game::isRound = false;
 
 	/// Initialize texture pointers
 	Game::dealerTexture = NULL;
@@ -274,7 +274,7 @@ bool Game::ttf_init() {
 
 void Game::update() {
 	if (player->getScore() > 21) {
-		Game::isBet = false;
+		Game::isRound = false;
 	}
 }
 
@@ -332,8 +332,11 @@ void Game::render() {
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 170, 100, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 225, 130, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 160, wh / 2 + 225, 130, 40);
-	TextureManager::Instance()->drawRecnatgle(renderer, ww - 90, wh / 2 + 225, 80, 40);
-	TextureManager::Instance()->drawRecnatgle(renderer, ww - 155, wh / 2 + 225, 50, 40);
+	if (!Game::isRound) {
+		TextureManager::Instance()->drawRecnatgle(renderer, ww - 90, wh / 2 + 225, 80, 40);
+		TextureManager::Instance()->drawRecnatgle(renderer, ww - 155, wh / 2 + 225, 50, 40);
+	}
+	
 
 	/// Render texture on window
 	SDL_RenderCopy(renderer, dealerTexture, NULL, &dealerRect);
@@ -353,9 +356,10 @@ void Game::render() {
 	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
 	SDL_RenderCopy(renderer, minBetBtnTexture, NULL, &minBetBtnRect);
 	SDL_RenderCopy(renderer, maxBetBtnTexture, NULL, &maxBetBtnRect);
-	SDL_RenderCopy(renderer, quitBtnTexture, NULL, &quitBtnRect);
-	SDL_RenderCopy(renderer, okBtnTexture, NULL, &okBtnRect);
-	
+	if (!Game::isRound) {
+		SDL_RenderCopy(renderer, quitBtnTexture, NULL, &quitBtnRect);
+		SDL_RenderCopy(renderer, okBtnTexture, NULL, &okBtnRect);
+	}
 
 	SDL_RenderPresent(renderer);
 }
@@ -457,6 +461,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 		std::cout << "min BET button is clicked" << std::endl;
 		if (!Game::isBet) {
 			Game::isBet = true;
+			Game::isRound = true;
 			player->setBet(false);
 		}
 
@@ -475,6 +480,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 		std::cout << "max BET button is clicked" << std::endl;
 		if (!Game::isBet) {
 			Game::isBet = true;
+			Game::isRound = true;
 			player->setBet(true);
 		}
 
