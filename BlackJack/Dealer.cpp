@@ -6,7 +6,7 @@ Dealer::Dealer(CardDeck& deck) {
 	dealerCards[1] = deck.dealCard();
 
 	numberOfCards = 2;
-	this->_score = dealerCards[0].getPoint();
+	this->score = dealerCards[0].getPoint();
 
 	std::cout << "Dealer is created" << std::endl;
 }
@@ -15,12 +15,8 @@ Dealer::~Dealer() {
 	delete[] dealerCards;
 }
 
-int Dealer::getScore() const {
-	return this->_score;
-}
-
 void Dealer::increaseScore(int points) {
-	this->_score += points;
+	this->score += points;
 
-	std::cout << "Dealer score is: " << _score << " after increase with " << points << std::endl;
+	std::cout << "Dealer score is: " << score << " after increase with " << points << std::endl;
 }

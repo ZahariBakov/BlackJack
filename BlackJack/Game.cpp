@@ -155,7 +155,7 @@ bool Game::ttf_init() {
 		scoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 		/// Get the dealer's score and convert to a string
-		t = std::to_string(dealer->getScore());
+		t = std::to_string(dealer->score);
 		char const* dealerScoreStr = t.c_str();
 
 		tempSurfaceText = TTF_RenderText_Blended(font2, dealerScoreStr, { 255, 255, 255, 255 });
@@ -396,7 +396,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > hitBtnX && xDown < (hitBtnX + hitBtnW)) && (xUp > hitBtnX && xUp < (hitBtnX + hitBtnW)) &&
 		(yDown > hitBtnY && yDown < (hitBtnY + hitBtnH)) && (yUp > hitBtnY && yUp < (hitBtnY + hitBtnH))) {
 		std::cout << "HIT button is clicked" << std::endl;
-		if (Game::isBet && player->numberOfCards < 11) {
+		if (Game::isBet && player->numberOfCards < 11 && !Game::isStay) {
 			player->addCard(mainDeck);
 		}
 
@@ -413,8 +413,10 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > stayBtnX && xDown < (stayBtnX + stayBtnW)) && (xUp > stayBtnX && xUp < (stayBtnX + stayBtnW)) &&
 		(yDown > stayBtnY && yDown < (stayBtnY + stayBtnH)) && (yUp > stayBtnY && yUp < (stayBtnY + stayBtnH))) {
 		std::cout << "STAY button is clicked" << std::endl;
-		if (Game::isBet) {
+		if (Game::isBet && !Game::isStay) {
 			Game::isStay = true;
+
+			dealer->score += dealer->dealerCards[1].getPoint();
 		}
 
 		return;
