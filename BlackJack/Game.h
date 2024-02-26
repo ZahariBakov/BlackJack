@@ -36,9 +36,9 @@ public:
 	 */
 	bool ttf_init();
 
-	void update();/*!< Update the game state*/
 	void render();/*!< Render the game*/
 	void handleEvents();/*!< Handle user events*/
+	void update();/*!< Update the game state*/
 	void clean();/*!< Cleans up resources and shuts down SDL.*/
 
 	bool isRunning() const;/*!< Checks if the game is still running.*/
@@ -47,7 +47,7 @@ public:
 private:
 	SDL_Window* window = NULL;/*!< The game window*/
 	SDL_Renderer* renderer = NULL;/*!< The renderer for rendering graphics*/
-	bool running, isBet, isStay, isRound;
+	bool running, isStay, isRound;
 
 	/// Textures
 	SDL_Texture* dealerTexture,
@@ -57,7 +57,8 @@ private:
 		* moneyTexture,
 		* moneyStrTexture,
 		* betStrTexture,
-		* betTexture,
+		* minBetTexture,
+		* maxBetTexture,
 		* hitBtnTexture,
 		* stayBtnTexture,
 		* dealerScoreTexture,
@@ -75,7 +76,8 @@ private:
 		moneyRect,
 		moneyStrRect,
 		betStrRect,
-		betRect,
+		minBetRect,
+		maxBetRect,
 		hitBtnRect,
 		stayBtnRect,
 		dealerScoreRect,
@@ -87,4 +89,5 @@ private:
 
 	int mouseDownX, mouseDownY;/*!< Mouse coordinates*/
 	CardDeck mainDeck;
+	int isBet;
 };

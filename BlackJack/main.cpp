@@ -14,10 +14,11 @@ int main(int argc, char* argv[]) {
 	/// Call the init function of the game object
 	game->init("Come and lose some money!!!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
 
+	game->ttf_init();    /*!< Call the ttf_init function of the game object*/
+
 	/// Loop when the game is running
 	while (game->isRunning()) {
 		game->handleEvents();/*!< Process events*/
-		game->ttf_init();    /*!< Call the ttf_init function of the game object*/
 		game->update();      /*!< Update game logic*/
 		game->render();      /*!< Render graphics*/
 	}
