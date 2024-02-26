@@ -31,20 +31,18 @@ private:
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
 	bool running, isStay, isRound;
+	int mouseDownX, mouseDownY, betFlag;
 
 	SDL_Texture* dealerTexture,
 		* playerTexture,
-		* scoreTexture,
-		* scoreStrTexture,
 		* moneyTexture,
-		* moneyStrTexture,
-		* betStrTexture,
+		* scoreTexture,
+		* dealerScoreTexture,
+		* betTexture,
 		* minBetTexture,
 		* maxBetTexture,
 		* hitBtnTexture,
 		* stayBtnTexture,
-		* dealerScoreTexture,
-		* dealerScoreStrTexture,
 		* minBetBtnTexture,
 		* maxBetBtnTexture,
 		* quitBtnTexture,
@@ -52,23 +50,16 @@ private:
 
 	SDL_Rect dealerRect,
 		playerRect,
-		scoreRect,
-		scoreStrRect,
 		moneyRect,
-		moneyStrRect,
-		betStrRect,
+		scoreRect,
+		dealerScoreRect,
+		betRect,
 		minBetRect,
 		maxBetRect,
 		hitBtnRect,
 		stayBtnRect,
-		dealerScoreRect,
-		dealerScoreStrRect,
 		minBetBtnRect,
 		maxBetBtnRect,
 		quitBtnRect,
 		okBtnRect;
-
-	int mouseDownX, mouseDownY;
-	
-	int isBet;
 };

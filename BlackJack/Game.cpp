@@ -8,7 +8,8 @@ std::string thirdCardName;
 //Dealer* dealer;
 CardDeck* mainDeck;
 
-Game::Game() {
+Game::Game() 
+{
 	Game::window   = NULL;
 	Game::renderer = NULL;
 
@@ -16,21 +17,13 @@ Game::Game() {
 	Game::isStay  = false;
 	Game::isRound = false;
 
-	Game::isBet = 0;
-
 	Game::dealerTexture         = NULL;
 	Game::playerTexture         = NULL;
 	Game::scoreTexture          = NULL;
-	Game::scoreStrTexture       = NULL;
-	Game::moneyTexture          = NULL;
-	Game::moneyStrTexture       = NULL;
 	Game::minBetTexture         = NULL;
 	Game::maxBetTexture         = NULL;
-	Game::betStrTexture         = NULL;
 	Game::hitBtnTexture         = NULL;
 	Game::stayBtnTexture        = NULL;
-	Game::dealerScoreTexture    = NULL;
-	Game::dealerScoreStrTexture = NULL;
 	Game::minBetBtnTexture      = NULL;
 	Game::maxBetBtnTexture      = NULL;
 	Game::quitBtnTexture        = NULL;
@@ -39,31 +32,26 @@ Game::Game() {
 	Game::dealerRect         = { 0, 0, 0, 0 };
 	Game::playerRect         = { 0, 0, 0, 0 };
 	Game::scoreRect			 = { 0, 0, 0, 0 };
-	Game::scoreStrRect		 = { 0, 0, 0, 0 };
-	Game::moneyRect		     = { 0, 0, 0, 0 };
-	Game::moneyStrRect	     = { 0, 0, 0, 0 };
 	Game::minBetRect		 = { 0, 0, 0, 0 };
 	Game::maxBetRect		 = { 0, 0, 0, 0 };
-	Game::betStrRect		 = { 0, 0, 0, 0 }; 
 	Game::hitBtnRect		 = { 0, 0, 0, 0 };
 	Game::stayBtnRect		 = { 0, 0, 0, 0 };
-	Game::dealerScoreRect    = { 0, 0, 0, 0 };
-	Game::dealerScoreStrRect = { 0, 0, 0, 0 };
 	Game::minBetBtnRect		 = { 0, 0, 0, 0 };
 	Game::maxBetBtnRect		 = { 0, 0, 0, 0 };
 	Game::quitBtnRect		 = { 0, 0, 0, 0 };
 	Game::okBtnRect			 = { 0, 0, 0, 0 };
 
-	Game::mouseDownX = Game::mouseDownY = 0;
+	Game::mouseDownX = Game::mouseDownY = Game::betFlag = 0;
 }
 
-
-Game::~Game() {
+Game::~Game() 
+{
 	delete window;
 	delete renderer;
 }
 
-bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags) {
+bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags) 
+{
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		std::cout << "SDL init success!\n";
 
@@ -77,7 +65,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 				std::cout << "Renderer creation success!\n";
 
 				mainDeck = new CardDeck(renderer);
-				//mainDeck->shuffle();
+				mainDeck->shuffle();
 
 				/*player = new Player(*mainDeck);
 				dealer = new Dealer(*mainDeck);*/
@@ -131,14 +119,14 @@ bool Game::ttf_init() {
 	playerTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Money: $", { 255, 255, 255, 255 });
-	moneyStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	moneyTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Score: ", { 255, 255, 255, 255 });
-	scoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
-	dealerScoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	scoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	dealerScoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Current Bet: $", { 255, 255, 255, 255 });
-	betStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
+	betTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	tempSurfaceText = TTF_RenderText_Blended(font2, "100", { 255, 255, 255, 255 });
 	minBetTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
@@ -146,7 +134,6 @@ bool Game::ttf_init() {
 	tempSurfaceText = TTF_RenderText_Blended(font2, "1000", { 255, 255, 255, 255 });
 	maxBetTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
-	/// Buttons
 	tempSurfaceText = TTF_RenderText_Blended(font3, "HIT", { 255, 255, 255, 255 });
 	hitBtnTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
@@ -173,17 +160,17 @@ bool Game::ttf_init() {
 	SDL_QueryTexture(playerTexture, 0, 0, &tw, &th);
 	playerRect = { 10, wh / 2 + 10, tw, th };
 
-	SDL_QueryTexture(moneyStrTexture, 0, 0, &tw, &th);
-	moneyStrRect = { 10, wh / 2 + 30, tw, th };
+	SDL_QueryTexture(moneyTexture, 0, 0, &tw, &th);
+	moneyRect = { 10, wh / 2 + 30, tw, th };
 
-	SDL_QueryTexture(scoreStrTexture, 0, 0, &tw, &th);
-	scoreStrRect = { 10, wh / 2 + 50, tw, th };
+	SDL_QueryTexture(scoreTexture, 0, 0, &tw, &th);
+	scoreRect = { 10, wh / 2 + 50, tw, th };
 
-	SDL_QueryTexture(dealerScoreStrTexture, 0, 0, &tw, &th);
-	dealerScoreStrRect = { 10, 30, tw, th };	
+	SDL_QueryTexture(dealerScoreTexture, 0, 0, &tw, &th);
+	dealerScoreRect = { 10, 30, tw, th };	
 
-	SDL_QueryTexture(betStrTexture, 0, 0, &tw, &th);
-	betStrRect = { 10, wh / 2 + 70, tw, th };
+	SDL_QueryTexture(betTexture, 0, 0, &tw, &th);
+	betRect = { 10, wh / 2 + 70, tw, th };
 
 	SDL_QueryTexture(minBetTexture, 0, 0, &tw, &th);
 	minBetRect = { 125, wh / 2 + 70, tw, th };
@@ -217,7 +204,8 @@ bool Game::ttf_init() {
 	return true;
 }
 
-void Game::handleEvents() {
+void Game::handleEvents() 
+{
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
 		int msx, msy;
@@ -245,8 +233,8 @@ void Game::handleEvents() {
 	}
 }
 
-void Game::render() {
-	//SDL_SetRenderDrawColor(renderer, 0, 153, 0, 255); // base table color
+void Game::render() 
+{
 	SDL_RenderClear(renderer);
 
 	SDL_Surface* tempSurfaceText = NULL;
@@ -257,86 +245,8 @@ void Game::render() {
 
 	TextureManager::Instance()->drawTexture("background", 0, 0, ww, wh, renderer);
 
-	//if (Game::isBet > 0) {
-	//	int x = 180;
-	//	int y = 10;
-	//	std::string cardName = "p";
-	//	std::string dealerCardName = "d";
-
-	//	for (int i = 0; i < player->numberOfCards; ++i) {
-	//		if (i > 0) {
-	//			x = 180 + (i * 30);
-	//		}
-	//		cardName += std::to_string(i);
-
-	//		TextureManager::Instance()->loadTexture(player->playerCards[i].toStringSuit().c_str(), cardName, renderer);
-	//		TextureManager::Instance()->drawTexture(cardName, x, wh / 2 + 20, 140, 190, renderer);
-	//	}
-
-	//	TextureManager::Instance()->loadTexture(dealer->dealerCards[0].toStringSuit().c_str(), "firstdealerCard", renderer);
-	//	TextureManager::Instance()->drawTexture("firstdealerCard", 180, y, 140, 190, renderer);
-
-	//	if (Game::isStay) {
-	//		TextureManager::Instance()->loadTexture(dealer->dealerCards[1].toStringSuit().c_str(), "seconddealerCard", renderer);
-	//		TextureManager::Instance()->drawTexture("seconddealerCard", 180 + 30, y, 140, 190, renderer);
-	//		std::cout << "now must wait" << std::endl;
-	//		SDL_Delay(500);
-
-	//		if (Game::isStay && dealer->score < player->getScore()) {
-	//			dealer->addCard(*mainDeck);
-	//		}
-
-	//		for (int i = 2; i < dealer->numberOfCards; ++i) {
-	//			SDL_Delay(500);
-
-	//			x = 180 + (i * 30);
-
-	//			dealerCardName += std::to_string(i);
-
-	//			TextureManager::Instance()->loadTexture(dealer->dealerCards[i].toStringSuit().c_str(), dealerCardName, renderer);
-	//			TextureManager::Instance()->drawTexture(dealerCardName, x, y, 140, 190, renderer);				
-	//		}
-	//	}
-	//	else {
-	//		TextureManager::Instance()->drawTexture("card-back", 210, 10, 140, 190, renderer);
-	//	}
-	//}
-
-	//std::string t = std::to_string(player->getMoney());
-	//char const* playerMoneyToString = t.c_str();
-
-	//tempSurfaceText = TTF_RenderText_Blended(font2, playerMoneyToString, { 255, 255, 255, 255 });
-	//moneyTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
-
-	//if (Game::isBet > 0) {
-	//	/// Get the player's score and convert the value to a string.
-	//	std::string t = std::to_string(player->getScore());
-	//	char const* scoreStr = t.c_str();
-
-	//	tempSurfaceText = TTF_RenderText_Blended(font2, scoreStr, { 255, 255, 255, 255 });
-	//	scoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
-
-	//	/// Get the dealer's score and convert to a string
-	//	t = std::to_string(dealer->score);
-	//	char const* dealerScoreStr = t.c_str();
-
-	//	tempSurfaceText = TTF_RenderText_Blended(font2, dealerScoreStr, { 255, 255, 255, 255 });
-	//	dealerScoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
-	//}
-	//int tw, th;
-	//// Money value
-	//SDL_QueryTexture(moneyTexture, 0, 0, &tw, &th);
-	//moneyRect = { 85, wh / 2 + 30, tw, th };
-
-	//SDL_QueryTexture(scoreTexture, 0, 0, &tw, &th);
-	//scoreRect = { 70, wh / 2 + 50, tw, th };
-
-	//SDL_QueryTexture(dealerScoreTexture, 0, 0, &tw, &th);
-	//dealerScoreRect = { 70, 30, tw, th };
-	//
-	///// Drawing a line in the middle
-	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	//SDL_RenderDrawLine(renderer, 0, wh / 2, ww, wh / 2);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderDrawLine(renderer, 0, wh / 2, ww, wh / 2);
 
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 115, 80, 40);
 	TextureManager::Instance()->drawRecnatgle(renderer, 10, wh / 2 + 170, 100, 40);
@@ -349,28 +259,22 @@ void Game::render() {
 	
 	SDL_RenderCopy(renderer, dealerTexture, NULL, &dealerRect);
 	SDL_RenderCopy(renderer, playerTexture, NULL, &playerRect);
-
-	SDL_RenderCopy(renderer, scoreStrTexture, NULL, &scoreStrRect);
-	SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);
-	SDL_RenderCopy(renderer, dealerScoreStrTexture, NULL, &dealerScoreStrRect);
-	SDL_RenderCopy(renderer, dealerScoreTexture, NULL, &dealerScoreRect);
-
-	SDL_RenderCopy(renderer, moneyStrTexture, NULL, &moneyStrRect);
 	SDL_RenderCopy(renderer, moneyTexture, NULL, &moneyRect);
-	
-	SDL_RenderCopy(renderer, betStrTexture, NULL, &betStrRect);
-
-	//if (Game::isBet == 1) {
-	//	SDL_RenderCopy(renderer, minBetTexture, NULL, &minBetRect);
-	//}
-	//if (Game::isBet == 2) {
-	//	SDL_RenderCopy(renderer, maxBetTexture, NULL, &maxBetRect);
-	//}
-	
+	SDL_RenderCopy(renderer, scoreTexture, NULL, &scoreRect);	
+	SDL_RenderCopy(renderer, dealerScoreTexture, NULL, &dealerScoreRect);
+	SDL_RenderCopy(renderer, betTexture, NULL, &betRect);
 	SDL_RenderCopy(renderer, hitBtnTexture, NULL, &hitBtnRect);
 	SDL_RenderCopy(renderer, stayBtnTexture, NULL, &stayBtnRect);
 	SDL_RenderCopy(renderer, minBetBtnTexture, NULL, &minBetBtnRect);
 	SDL_RenderCopy(renderer, maxBetBtnTexture, NULL, &maxBetBtnRect);
+
+	if (Game::betFlag == 1) {
+		SDL_RenderCopy(renderer, minBetTexture, NULL, &minBetRect);
+	} 
+	if (Game::betFlag == 2) {
+		SDL_RenderCopy(renderer, maxBetTexture, NULL, &maxBetRect);
+	}
+	
 	if (!Game::isRound) {
 		SDL_RenderCopy(renderer, quitBtnTexture, NULL, &quitBtnRect);
 		SDL_RenderCopy(renderer, okBtnTexture, NULL, &okBtnRect);
@@ -382,24 +286,23 @@ void Game::render() {
 	TTF_CloseFont(font2);
 }
 
-void Game::update() {
-	//if (player->getScore() > 21) {
-	//	Game::isRound = false;
-	//}
-}
+void Game::update() {}
 
-void Game::clean() {
+void Game::clean() 
+{
 	std::cout << "Cleaning game!\n";
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 }
 
-bool Game::isRunning() const {
+bool Game::isRunning() const 
+{
 	return Game::running;
 }
 
-void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
+void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) 
+{
 	int ww, wh;
 	SDL_GetWindowSize(window, &ww, &wh);
 
@@ -411,9 +314,6 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > hitBtnX && xDown < (hitBtnX + hitBtnW)) && (xUp > hitBtnX && xUp < (hitBtnX + hitBtnW)) &&
 		(yDown > hitBtnY && yDown < (hitBtnY + hitBtnH)) && (yUp > hitBtnY && yUp < (hitBtnY + hitBtnH))) {
 		std::cout << "HIT button is clicked" << std::endl;
-		//if (Game::isBet > 0 && player->numberOfCards < 11 && !Game::isStay) {
-		//	player->addCard(*mainDeck);
-		//}
 
 		return;
 	}
@@ -426,11 +326,6 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > stayBtnX && xDown < (stayBtnX + stayBtnW)) && (xUp > stayBtnX && xUp < (stayBtnX + stayBtnW)) &&
 		(yDown > stayBtnY && yDown < (stayBtnY + stayBtnH)) && (yUp > stayBtnY && yUp < (stayBtnY + stayBtnH))) {
 		std::cout << "STAY button is clicked" << std::endl;
-		//if (Game::isBet > 0 && !Game::isStay) {
-		//	Game::isStay = true;
-
-		//	dealer->score += dealer->dealerCards[1].getPoint();
-		//}
 
 		return;
 	}
@@ -443,11 +338,6 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > minBetBtnX && xDown < (minBetBtnX + minBetBtnW)) && (xUp > minBetBtnX && xUp < (minBetBtnX + minBetBtnW)) &&
 		(yDown > minBetBtnY && yDown < (minBetBtnY + minBetBtnH)) && (yUp > minBetBtnY && yUp < (minBetBtnY + minBetBtnH))) {
 		std::cout << "min BET button is clicked" << std::endl;
-		//if (Game::isBet == 0) {
-		//	Game::isBet = 1;
-		//	Game::isRound = true;
-		//	player->setBet(false);
-		//}
 
 		return;
 	}
@@ -460,11 +350,6 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp) {
 	if ((xDown > maxBetBtnX && xDown < (maxBetBtnX + maxBetBtnW)) && (xUp > maxBetBtnX && xUp < (maxBetBtnX + maxBetBtnW)) &&
 		(yDown > maxBetBtnY && yDown < (maxBetBtnY + maxBetBtnH)) && (yUp > maxBetBtnY && yUp < (maxBetBtnY + maxBetBtnH))) {
 		std::cout << "max BET button is clicked" << std::endl;
-		//if (Game::isBet == 0) {
-		//	Game::isBet = 2;
-		//	Game::isRound = true;
-		//	player->setBet(true);
-		//}
 
 		return;
 	}

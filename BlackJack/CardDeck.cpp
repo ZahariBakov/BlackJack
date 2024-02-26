@@ -14,21 +14,19 @@ CardDeck::CardDeck(SDL_Renderer* renderer) {
 	std::cout << "Deck is created! " << deckOfCards.size() << std::endl;
 }
 
-/// Return current card
-//Card CardDeck::dealCard() {
-//	/// If current card is last shuffle deck and set current card to 0
-//	if (this->_currentCard == 52) {
-//		this->shuffle();
-//		this->_currentCard = 0;
-//	}
-//
-//	Card dealCard = _allCards[_currentCard];
-//	_currentCard++;
-//
-//	std::cout << "Deal card " << dealCard.getCardSuit() << " " << dealCard.getCardRank() << std::endl;
-//
-//	return dealCard;
-//}
+Card CardDeck::dealCard() {
+	if (this->_currentCard == 52) {
+		this->shuffle();
+		this->_currentCard = 0;
+	}
+
+	Card dealCard = deckOfCards[_currentCard];
+	_currentCard++;
+
+	std::cout << "Deal card " << dealCard.getCardSuit() << " " << dealCard.getCardRank() << std::endl;
+
+	return dealCard;
+}
 
 void CardDeck::shuffle() {
 	for (int i = 0; i < 200; ++i) {
