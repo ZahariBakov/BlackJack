@@ -1,19 +1,43 @@
 #include "Card.h"
+#include <iostream>
 
-Card::Card(int suit, int rank) : _cardSuit(suit), _cardRank(rank) {}
+int width  = 140;
+int height = 190;
 
-/// Function that give's access to card suit to outside world
-int Card::getCardSuit() const {
-	return this->_cardSuit;
+Card::Card() 
+{
+	_renderer = nullptr;
+	_suit = 0; 
+	_rank = 0;
+	_x = 0;  
+	_y = 0;
 }
 
-/// Function that give's access to card rank to outside world
-int Card::getCardRank() const {
-	return this->_cardRank;
+Card::Card(SDL_Renderer* renderer, int suit, int rank) 
+{
+	_renderer = renderer;
+	_suit = suit;
+	_rank = rank;
+	_x = 0;
+	_y = 0;
+	std::string path = toStringSuit();
+	id = std::to_string(suit) + std::to_string(rank);
+
+	TextureManager::Instance()->loadTexture(path.c_str(), id, _renderer);
 }
 
-/// Function that return card points
-int Card::getPoint() const {
+int Card::getCardSuit() const 
+{
+	return this->_suit;
+}
+
+int Card::getCardRank() const 
+{
+	return this->_rank;
+}
+
+int Card::getPoint() const 
+{
 	if (getCardRank() > 10) {
 		if (getCardRank() == 14) {
 			return 11;
@@ -27,26 +51,42 @@ int Card::getPoint() const {
 	}
 }
 
-/// Function to create string that is used to select image when dislayed
-std::string Card::toStringSuit() const {
+void Card::setPosition(int x, int y)
+{
+	_x = x;
+	_y = y;
+}
+
+void Card::render() const 
+{
+	TextureManager::Instance()->drawTexture(id, _x, _y, width, height, _renderer);
+}
+
+void Card::setRenderer(SDL_Renderer* renderer)
+{
+	_renderer = renderer;
+}
+
+std::string Card::toStringSuit() const 
+{
 	std::string suit;
 
-	switch (getCardSuit()){
-		case 1:
-			suit = "cardDiamonds";
-			break;
-		case 2:
-			suit = "cardClubs";
-			break;
-		case 3:
-			suit = "cardHearts";
-			break;
-		case 4:
-			suit = "cardSpades";
-			break;
+	switch (getCardSuit()) {
+	case 1:
+		suit = "cardDiamonds";
+		break;
+	case 2:
+		suit = "cardClubs";
+		break;
+	case 3:
+		suit = "cardHearts";
+		break;
+	case 4:
+		suit = "cardSpades";
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	std::string result = "assets/cards/" + suit + this->toStringRank(getCardRank()) + ".png";
@@ -54,7 +94,8 @@ std::string Card::toStringSuit() const {
 	return result;
 }
 
-std::string Card::toStringRank(int rank) const {
+std::string Card::toStringRank(int rank) const 
+{
 	std::string result;
 
 	if (rank > 10) {

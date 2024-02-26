@@ -2,27 +2,30 @@
 
 #include <string>
 
+#include "TextureManager.h"
+
 class Card {
 public:
-	/// Default Constructor
-	Card() : _cardSuit(0), _cardRank(0) {};
+	Card();
+	Card(SDL_Renderer* renderer, int suit, int rank);
 
-	/// Constructor of the class
-	Card(int suit, int rank);
-
-	/// Functions to returns suit, rank and points
 	int getCardSuit() const;
 	int getCardRank() const;
 	int getPoint() const;
 
-	/// Function to create card name and rank in string format
-	std::string toStringSuit() const;
+	void setPosition(int x, int y);
+	void render() const;
+	void setRenderer(SDL_Renderer* renderer);
 	
 private:
-	/// Variables for suit and rank
-	int _cardSuit;
-	int _cardRank;
+	int _suit;
+	int _rank;
+	std::string id;
+	int _x;
+	int _y;
 
-	/// Inner function that create rank in string format
+	std::string toStringSuit() const;
 	std::string toStringRank(int rank) const;
+
+	SDL_Renderer* _renderer;
 };

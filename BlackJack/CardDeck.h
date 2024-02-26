@@ -2,14 +2,17 @@
 
 #include "Card.h"
 
+#include <vector>
+
 class CardDeck {
 public:
-	CardDeck();
+	CardDeck(SDL_Renderer* renderer);
 
-	Card dealCard();
+	//Card dealCard();
 	void shuffle();
 
+	std::vector<Card> deckOfCards;
+
 private:
-	Card _allCards[52];
 	int _currentCard;
 };
