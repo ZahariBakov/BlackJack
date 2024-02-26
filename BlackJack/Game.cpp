@@ -142,13 +142,6 @@ bool Game::ttf_init() {
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Money: $", { 255, 255, 255, 255 });
 	moneyStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
-	/// Decrease the player's money by the amount of their bet and convert the updated money value to a char const*.
-	std::string t = std::to_string(player->getMoney());
-	char const* playerMoneyToString = t.c_str();
-
-	tempSurfaceText = TTF_RenderText_Blended(font2, playerMoneyToString, { 255, 255, 255, 255 });
-	moneyTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
-
 	tempSurfaceText = TTF_RenderText_Blended(font2, "Score: ", { 255, 255, 255, 255 });
 	scoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 	dealerScoreStrTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
@@ -195,10 +188,6 @@ bool Game::ttf_init() {
 	// Money string
 	SDL_QueryTexture(moneyStrTexture, 0, 0, &tw, &th);
 	moneyStrRect = { 10, wh / 2 + 30, tw, th };
-
-	// Money value
-	SDL_QueryTexture(moneyTexture, 0, 0, &tw, &th);
-	moneyRect = { 85, wh / 2 + 30, tw, th };
 
 	// Score string
 	SDL_QueryTexture(scoreStrTexture, 0, 0, &tw, &th);
@@ -299,7 +288,7 @@ void Game::render() {
 
 	if (Game::isBet > 0) {
 		int x = 180;
-		int y = 180;
+		int y = 10;
 		std::string cardName = "p";
 		std::string dealerCardName = "d";
 
@@ -313,28 +302,40 @@ void Game::render() {
 			TextureManager::Instance()->drawTexture(cardName, x, wh / 2 + 20, 140, 190, renderer);
 		}
 
+		TextureManager::Instance()->loadTexture(dealer->dealerCards[0].toStringSuit().c_str(), "firstdealerCard", renderer);
+		TextureManager::Instance()->drawTexture("firstdealerCard", 180, y, 140, 190, renderer);
+
 		if (Game::isStay) {
-			for (int i = 0; i < dealer->numberOfCards; ++i) {
-				if (i > 0) {
-					y = 180 + (i * 30);
-				}
+			TextureManager::Instance()->loadTexture(dealer->dealerCards[1].toStringSuit().c_str(), "seconddealerCard", renderer);
+			TextureManager::Instance()->drawTexture("seconddealerCard", 180 + 30, y, 140, 190, renderer);
+			std::cout << "now must wait" << std::endl;
+			SDL_Delay(500);
+
+			if (Game::isStay && dealer->score < player->getScore()) {
+				dealer->addCard(mainDeck);
+			}
+
+			for (int i = 2; i < dealer->numberOfCards; ++i) {
+				SDL_Delay(500);
+
+				x = 180 + (i * 30);
+
 				dealerCardName += std::to_string(i);
 
 				TextureManager::Instance()->loadTexture(dealer->dealerCards[i].toStringSuit().c_str(), dealerCardName, renderer);
-				TextureManager::Instance()->drawTexture(dealerCardName, y, 10, 140, 190, renderer);
-
-				if (i > 1) {
-					SDL_Delay(1000);
-				}
-				
+				TextureManager::Instance()->drawTexture(dealerCardName, x, y, 140, 190, renderer);				
 			}
 		}
 		else {
-			TextureManager::Instance()->loadTexture(dealer->dealerCards[0].toStringSuit().c_str(), "firstdealerCard", renderer);
-			TextureManager::Instance()->drawTexture("firstdealerCard", 180, 10, 140, 190, renderer);
 			TextureManager::Instance()->drawTexture("card-back", 210, 10, 140, 190, renderer);
 		}
 	}
+
+	std::string t = std::to_string(player->getMoney());
+	char const* playerMoneyToString = t.c_str();
+
+	tempSurfaceText = TTF_RenderText_Blended(font2, playerMoneyToString, { 255, 255, 255, 255 });
+	moneyTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 
 	if (Game::isBet > 0) {
 		/// Get the player's score and convert the value to a string.
@@ -352,6 +353,10 @@ void Game::render() {
 		dealerScoreTexture = SDL_CreateTextureFromSurface(renderer, tempSurfaceText);
 	}
 	int tw, th;
+	// Money value
+	SDL_QueryTexture(moneyTexture, 0, 0, &tw, &th);
+	moneyRect = { 85, wh / 2 + 30, tw, th };
+
 	SDL_QueryTexture(scoreTexture, 0, 0, &tw, &th);
 	scoreRect = { 70, wh / 2 + 50, tw, th };
 
@@ -411,10 +416,6 @@ void Game::render() {
 void Game::update() {
 	if (player->getScore() > 21) {
 		Game::isRound = false;
-	}
-
-	if (Game::isStay && dealer->score < player->getScore()) {
-		dealer->addCard(mainDeck);
 	}
 }
 
