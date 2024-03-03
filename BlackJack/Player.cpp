@@ -1,27 +1,25 @@
-//#include "Player.h"
-//
-//#include <iostream>
-//
-///// Player constructor that set money, score and bet to default values 
-//Player::Player(CardDeck& deck) {
-//	this->_money = 100000;
-//	this->_bet = 100;
-//
-//	playerCards = new Card[2];
-//	playerCards[0] = deck.dealCard();
-//	playerCards[1] = deck.dealCard();
-//
-//	numberOfCards = 2;
-//	this->_score = playerCards[0].getPoint() + playerCards[1].getPoint();
-//
-//	std::cout << "Player is created" << std::endl;
-//}
-//
-//Player::~Player() {
-//	delete[] playerCards;
-//}
-//
-///// Function that give access to player's money to outside world
+#include "Player.h"
+
+#include <iostream>
+
+Player::Player(CardDeck* deck) {
+	this->_money = 100000;
+	this->_bet = 100;
+
+	playerCards = new Card[2];
+	playerCards[0] = deck->dealCard();
+	playerCards[1] = deck->dealCard();
+
+	numberOfCards = 2;
+	this->_score = playerCards[0].getPoint() + playerCards[1].getPoint();
+
+	std::cout << "Player is created" << std::endl;
+}
+
+Player::~Player() {
+	delete[] playerCards;
+}
+
 //int Player::getMoney() const {
 //	return this->_money;
 //}

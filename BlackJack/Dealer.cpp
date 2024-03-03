@@ -1,7 +1,7 @@
 #include "Dealer.h"
 
 Dealer::Dealer(CardDeck* deck) {
-	dealerCards = new Card[11];
+	dealerCards = new Card[2];
 	dealerCards[0] = deck->dealCard();
 	dealerCards[1] = deck->dealCard();
 

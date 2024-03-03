@@ -1,14 +1,12 @@
 #pragma once
 
 #include "CardDeck.h"
-
 #include <vector>
 
-/// Player class
 class Player {
 public:
-	//Player(CardDeck& deck);/*!< Default constructor*/
-	//~Player();
+	Player(CardDeck* deck);/*!< Default constructor*/
+	~Player();
 
 	//int getMoney() const;/*!< Function that return the value of money*/
 	//int getScore() const;/*!< Function that return the value of score*/
@@ -20,13 +18,12 @@ public:
 	//void increaseScore(int points);/*!< Function that increase the value of score*/
 	//void addCard(CardDeck& deck);
 
-	//Card* playerCards;
+	Card* playerCards;
 
-	//int numberOfCards;
+	int numberOfCards;
 
 private:
-	//int _money;/*!< Private variable for money*/
-	//int _score;/*!< Private variable for score*/
-	//int _bet;/*!< Private variable for bet*/
-
+	int _money;
+	int _score;
+	int _bet;
 };
