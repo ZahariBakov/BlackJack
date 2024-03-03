@@ -16,11 +16,12 @@ public:
 	void setPosition(int x, int y);
 	void render() const;
 	void setRenderer(SDL_Renderer* renderer);
+
+	std::string id;
 	
 private:
 	int _suit;
 	int _rank;
-	std::string id;
 	int _x;
 	int _y;
 

@@ -6,14 +6,14 @@
 
 class Dealer {
 public:
-	//Dealer(CardDeck& deck);
-	//~Dealer();
+	Dealer(CardDeck* deck);
+	~Dealer();
 
 	//void increaseScore(int points);
 	//void addCard(CardDeck& deck);
 
-	//Card* dealerCards;
+	Card* dealerCards;
 
-	//int numberOfCards;
-	//int score;
+	int numberOfCards;
+	int score;
 };

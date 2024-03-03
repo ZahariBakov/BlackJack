@@ -5,7 +5,7 @@
 std::string thirdCardName;
 
 //Player* player;
-//Dealer* dealer;
+Dealer* dealer;
 CardDeck* mainDeck;
 
 Game::Game() 
@@ -17,29 +17,29 @@ Game::Game()
 	Game::isStay  = false;
 	Game::isRound = false;
 
-	Game::dealerTexture         = NULL;
-	Game::playerTexture         = NULL;
-	Game::scoreTexture          = NULL;
-	Game::minBetTexture         = NULL;
-	Game::maxBetTexture         = NULL;
-	Game::hitBtnTexture         = NULL;
-	Game::stayBtnTexture        = NULL;
-	Game::minBetBtnTexture      = NULL;
-	Game::maxBetBtnTexture      = NULL;
-	Game::quitBtnTexture        = NULL;
-	Game::okBtnTexture          = NULL;
+	Game::dealerTexture    = NULL;
+	Game::playerTexture    = NULL;
+	Game::scoreTexture     = NULL;
+	Game::minBetTexture    = NULL;
+	Game::maxBetTexture    = NULL;
+	Game::hitBtnTexture    = NULL;
+	Game::stayBtnTexture   = NULL;
+	Game::minBetBtnTexture = NULL;
+	Game::maxBetBtnTexture = NULL;
+	Game::quitBtnTexture   = NULL;
+	Game::okBtnTexture     = NULL;
 
-	Game::dealerRect         = { 0, 0, 0, 0 };
-	Game::playerRect         = { 0, 0, 0, 0 };
-	Game::scoreRect			 = { 0, 0, 0, 0 };
-	Game::minBetRect		 = { 0, 0, 0, 0 };
-	Game::maxBetRect		 = { 0, 0, 0, 0 };
-	Game::hitBtnRect		 = { 0, 0, 0, 0 };
-	Game::stayBtnRect		 = { 0, 0, 0, 0 };
-	Game::minBetBtnRect		 = { 0, 0, 0, 0 };
-	Game::maxBetBtnRect		 = { 0, 0, 0, 0 };
-	Game::quitBtnRect		 = { 0, 0, 0, 0 };
-	Game::okBtnRect			 = { 0, 0, 0, 0 };
+	Game::dealerRect    = { 0, 0, 0, 0 };
+	Game::playerRect    = { 0, 0, 0, 0 };
+	Game::scoreRect		= { 0, 0, 0, 0 };
+	Game::minBetRect	= { 0, 0, 0, 0 };
+	Game::maxBetRect	= { 0, 0, 0, 0 };
+	Game::hitBtnRect	= { 0, 0, 0, 0 };
+	Game::stayBtnRect	= { 0, 0, 0, 0 };
+	Game::minBetBtnRect = { 0, 0, 0, 0 };
+	Game::maxBetBtnRect = { 0, 0, 0, 0 };
+	Game::quitBtnRect	= { 0, 0, 0, 0 };
+	Game::okBtnRect		= { 0, 0, 0, 0 };
 
 	Game::mouseDownX = Game::mouseDownY = Game::betFlag = 0;
 }
@@ -67,8 +67,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 				mainDeck = new CardDeck(renderer);
 				mainDeck->shuffle();
 
-				/*player = new Player(*mainDeck);
-				dealer = new Dealer(*mainDeck);*/
+				//player = new Player(*mainDeck);
+				dealer = new Dealer(mainDeck);
 				
 				TextureManager::Instance()->loadTexture("assets/table-background.jpg", "background", renderer);
 				TextureManager::Instance()->loadTexture("assets/cards/cardBack_blue3.png", "card-back", renderer);
@@ -280,6 +280,11 @@ void Game::render()
 		SDL_RenderCopy(renderer, okBtnTexture, NULL, &okBtnRect);
 	}
 
+	if (dealer->numberOfCards == 2) {
+		TextureManager::Instance()->drawTexture(dealer->dealerCards[0].id, 180, 30, 140, 190, renderer);
+		TextureManager::Instance()->drawTexture("card-back", 210, 30, 140, 190, renderer);
+	}
+
 	SDL_RenderPresent(renderer);
 
 	SDL_FreeSurface(tempSurfaceText);
@@ -361,7 +366,8 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp)
 
 	if ((xDown > quitBetBtnX && xDown < (quitBetBtnX + quitBetBtnW)) && (xUp > quitBetBtnX && xUp < (quitBetBtnX + quitBetBtnW)) &&
 		(yDown > quitBetBtnY && yDown < (quitBetBtnY + quitBetBtnH)) && (yUp > quitBetBtnY && yUp < (quitBetBtnY + quitBetBtnH))) {
-		std::cout << "quit button is clicked" << std::endl;
+		std::cout << "QUIT button is clicked" << std::endl;
+		Game::running = false;
 
 		return;
 	}
@@ -373,7 +379,7 @@ void Game::clickedBtn( int xDown, int yDown, int xUp, int yUp)
 
 	if ((xDown > okBetBtnX && xDown < (okBetBtnX + okBetBtnW)) && (xUp > okBetBtnX && xUp < (okBetBtnX + okBetBtnW)) &&
 		(yDown > okBetBtnY && yDown < (okBetBtnY + okBetBtnH)) && (yUp > okBetBtnY && yUp < (okBetBtnY + okBetBtnH))) {
-		std::cout << "ok button is clicked" << std::endl;
+		std::cout << "OK button is clicked" << std::endl;
 
 		return;
 	}
