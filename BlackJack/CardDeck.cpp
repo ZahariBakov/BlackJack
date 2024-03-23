@@ -2,11 +2,14 @@
 
 #include <iostream>
 
-CardDeck::CardDeck(SDL_Renderer* renderer) {
-	this->m_currentCard = 0;
+CardDeck::CardDeck(SDL_Renderer* renderer)
+{
+	m_currentCard = 0;
 
-	for (int cardSuit = 1; cardSuit < 5; ++cardSuit) {
-		for (int cardRank = 2; cardRank < 15; ++cardRank) {
+	for (int cardSuit = 1; cardSuit < 5; ++cardSuit) 
+	{
+		for (int cardRank = 2; cardRank < 15; ++cardRank) 
+		{
 			m_deckOfCards.push_back(Card(renderer, cardSuit, cardRank));
 		}
 	}
@@ -14,10 +17,12 @@ CardDeck::CardDeck(SDL_Renderer* renderer) {
 	std::cout << "Deck is created! " << m_deckOfCards.size() << std::endl;
 }
 
-Card CardDeck::DealCard() {
-	if (this->m_currentCard == 52) {
-		this->Shuffle();
-		this->m_currentCard = 0;
+Card CardDeck::DealCard() 
+{
+	if (m_currentCard == 52) 
+	{
+		Shuffle();
+		m_currentCard = 0;
 	}
 
 	Card dealCard = m_deckOfCards[m_currentCard];
@@ -28,8 +33,10 @@ Card CardDeck::DealCard() {
 	return dealCard;
 }
 
-void CardDeck::Shuffle() {
-	for (int i = 0; i < 200; ++i) {
+void CardDeck::Shuffle()
+{
+	for (int i = 0; i < 200; ++i)
+	{
 		int j = rand() % 52;
 		int y = rand() % 52;
 

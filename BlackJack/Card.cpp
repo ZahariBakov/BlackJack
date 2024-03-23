@@ -1,9 +1,6 @@
 #include "Card.h"
 #include <iostream>
 
-int width  = 140;
-int height = 190;
-
 Card::Card() 
 {
 	m_renderer = nullptr;
@@ -28,12 +25,12 @@ Card::Card(SDL_Renderer* renderer, int suit, int rank)
 
 int Card::GetCardSuit() const 
 {
-	return this->m_suit;
+	return m_suit;
 }
 
 int Card::GetCardRank() const 
 {
-	return this->m_rank;
+	return m_rank;
 }
 
 int Card::GetPoint() const 
@@ -68,7 +65,9 @@ auto Card::GetId() const -> std::string
 
 void Card::Render() const 
 {
-	TextureManager::Instance()->DrawTexture(m_id, m_x, m_y, width, height, m_renderer);
+	int cardWidth = 140;
+	int cardHeight = 190;
+	TextureManager::Instance()->DrawTexture(m_id, m_x, m_y, cardWidth, cardHeight, m_renderer);
 }
 
 void Card::SetRenderer(SDL_Renderer* renderer)
@@ -108,7 +107,7 @@ std::string Card::ToStringSuit() const
 		}
 	}
 
-	std::string result = "assets/cards/" + suit + this->ToStringRank(GetCardRank()) + ".png";
+	std::string result = "assets/cards/" + suit + ToStringRank(GetCardRank()) + ".png";
 
 	return result;
 }
