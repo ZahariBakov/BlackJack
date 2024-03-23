@@ -8,13 +8,15 @@
 #include "Player.h"
 #include "CardDeck.h"
 #include "Dealer.h"
+#include "GameConstants.h"
 
-class Game {
+class Game 
+{
 public:
 	Game() {};
 	~Game();
 
-	auto Init(const char* title, int xpos, int ypos, int width, int height, int flags) -> bool;
+	auto Init(const char* title, int xpos, int ypos, int flags) -> bool;
 
 	void Render();
 	void HandleEvents();
@@ -37,6 +39,10 @@ private:
 	int m_mouseDownX = 0;
 	int m_mouseDownY = 0;
 	int m_betFlag    = 0;
+
+	Player* m_player = nullptr;
+	Dealer* m_dealer = nullptr;
+	CardDeck* m_mainDeck = nullptr;
 
 	SDL_Texture* m_dealerTexture      = nullptr;
 	SDL_Texture* m_playerTexture      = nullptr;
