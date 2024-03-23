@@ -4,7 +4,8 @@
 
 #include "CardDeck.h"
 
-class Dealer {
+class Dealer 
+{
 public:
 	Dealer(CardDeck* deck);
 	~Dealer();
@@ -12,10 +13,11 @@ public:
 	//void increaseScore(int points);
 	//void addCard(CardDeck& deck);
 
+	auto GetCurrentCard(int idx) const->Card;
+
+private:
 	Card* m_dealerCards;
 
 	int m_numberOfCards;
 	int m_score;
-private:
-
 };

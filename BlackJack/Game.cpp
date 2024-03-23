@@ -249,12 +249,12 @@ void Game::Render()
 	int x = 180;
 
 	if (!Game::m_isStay) {
-		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].GetId(), x, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->GetCurrentCard(0).GetId(), x, 30, 140, 190, m_renderer);
 		TextureManager::Instance()->DrawTexture("card-back", 210, 30, 140, 190, m_renderer);
 	}
 	else {
-		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].GetId(), x, 30, 140, 190, m_renderer);
-		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[1].GetId(), x + 30, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->GetCurrentCard(0).GetId(), x, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->GetCurrentCard(1).GetId(), x + 30, 30, 140, 190, m_renderer);
 	}
 
 	for (int i = 0; i < player->GetNumberOfCards(); ++i) {

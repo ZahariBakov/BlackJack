@@ -1,6 +1,7 @@
 #include "Dealer.h"
 
-Dealer::Dealer(CardDeck* deck) {
+Dealer::Dealer(CardDeck* deck) 
+{
 	m_dealerCards = new Card[2];
 	m_dealerCards[0] = deck->DealCard();
 	m_dealerCards[1] = deck->DealCard();
@@ -11,8 +12,14 @@ Dealer::Dealer(CardDeck* deck) {
 	std::cout << "Dealer is created" << std::endl;
 }
 
-Dealer::~Dealer() {
+Dealer::~Dealer()
+{
 	delete[] m_dealerCards;
+}
+
+auto Dealer::GetCurrentCard(int idx) const -> Card
+{
+	return m_dealerCards[idx];
 }
 
 //void Dealer::increaseScore(int points) {
