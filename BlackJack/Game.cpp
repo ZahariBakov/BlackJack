@@ -249,17 +249,17 @@ void Game::Render()
 	int x = 180;
 
 	if (!Game::m_isStay) {
-		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].m_id, x, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].GetId(), x, 30, 140, 190, m_renderer);
 		TextureManager::Instance()->DrawTexture("card-back", 210, 30, 140, 190, m_renderer);
 	}
 	else {
-		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].m_id, x, 30, 140, 190, m_renderer);
-		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[1].m_id, x + 30, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].GetId(), x, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[1].GetId(), x + 30, 30, 140, 190, m_renderer);
 	}
 
 	for (int i = 0; i < player->m_numberOfCards; ++i) {
 		x = x + 30 * i;
-		TextureManager::Instance()->DrawTexture(player->m_playerCards[i].m_id, x, wh - 250, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(player->m_playerCards[i].GetId(), x, wh - 250, 140, 190, m_renderer);
 	}
 
 	SDL_RenderPresent(m_renderer);
