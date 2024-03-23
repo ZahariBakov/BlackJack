@@ -9,24 +9,24 @@ public:
 	Card();
 	Card(SDL_Renderer* renderer, int suit, int rank);
 
-	int getCardSuit() const;
-	int getCardRank() const;
-	int getPoint() const;
+	auto GetCardSuit() const -> int;
+	auto GetCardRank() const -> int;
+	auto GetPoint() const -> int;
 
-	void setPosition(int x, int y);
-	void render() const;
-	void setRenderer(SDL_Renderer* renderer);
+	void SetPosition(int x, int y);
+	void Render() const;
+	void SetRenderer(SDL_Renderer* renderer);
 
 	std::string id;
 	
 private:
-	int _suit;
-	int _rank;
-	int _x;
-	int _y;
+	int m_suit;
+	int m_rank;
+	int m_x;
+	int m_y;
 
-	std::string toStringSuit() const;
-	std::string toStringRank(int rank) const;
+	auto ToStringSuit() const -> std::string;
+	auto ToStringRank(int rank) const -> std::string;
 
 	SDL_Renderer* _renderer;
 };

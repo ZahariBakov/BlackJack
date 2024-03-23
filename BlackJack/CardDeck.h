@@ -8,7 +8,7 @@ class CardDeck {
 public:
 	CardDeck(SDL_Renderer* renderer);
 
-	Card dealCard();
+	auto dealCard() -> Card;
 	void shuffle();
 
 	std::vector<Card> deckOfCards;

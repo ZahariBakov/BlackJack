@@ -10,16 +10,16 @@ int main(int argc, char* argv[]) {
 	                  
 	game = new Game();
 
-	game->init("Come and lose some money!!!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
-	game->ttf_init();
+	game->Init("Come and lose some money!!!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+	game->TtfInit();
 
-	while (game->isRunning()) {
-		game->handleEvents();
-		game->update();
-		game->render();
+	while (game->IsRunning()) {
+		game->HandleEvents();
+		game->Update();
+		game->Render();
 	}
 
-	game->clean();
+	game->Clean();
 
 	return 0;
 }

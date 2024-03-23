@@ -6,7 +6,7 @@ Dealer::Dealer(CardDeck* deck) {
 	dealerCards[1] = deck->dealCard();
 
 	numberOfCards = 2;
-	this->score = dealerCards[0].getPoint();
+	this->score = dealerCards[0].GetPoint();
 
 	std::cout << "Dealer is created" << std::endl;
 }

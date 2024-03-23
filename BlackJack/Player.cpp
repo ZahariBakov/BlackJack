@@ -11,7 +11,7 @@ Player::Player(CardDeck* deck) {
 	playerCards[1] = deck->dealCard();
 
 	numberOfCards = 2;
-	this->_score = playerCards[0].getPoint() + playerCards[1].getPoint();
+	this->_score = playerCards[0].GetPoint() + playerCards[1].GetPoint();
 
 	std::cout << "Player is created" << std::endl;
 }

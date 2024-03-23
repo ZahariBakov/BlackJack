@@ -7,39 +7,39 @@ int height = 190;
 Card::Card() 
 {
 	_renderer = nullptr;
-	_suit = 0; 
-	_rank = 0;
-	_x = 0;  
-	_y = 0;
+	m_suit = 0; 
+	m_rank = 0;
+	m_x = 0;  
+	m_y = 0;
 }
 
 Card::Card(SDL_Renderer* renderer, int suit, int rank) 
 {
 	_renderer = renderer;
-	_suit = suit;
-	_rank = rank;
-	_x = 0;
-	_y = 0;
-	std::string path = toStringSuit();
+	m_suit = suit;
+	m_rank = rank;
+	m_x = 0;
+	m_y = 0;
+	std::string path = ToStringSuit();
 	id = std::to_string(suit) + std::to_string(rank);
 
 	TextureManager::Instance()->loadTexture(path.c_str(), id, _renderer);
 }
 
-int Card::getCardSuit() const 
+int Card::GetCardSuit() const 
 {
-	return this->_suit;
+	return this->m_suit;
 }
 
-int Card::getCardRank() const 
+int Card::GetCardRank() const 
 {
-	return this->_rank;
+	return this->m_rank;
 }
 
-int Card::getPoint() const 
+int Card::GetPoint() const 
 {
-	if (getCardRank() > 10) {
-		if (getCardRank() == 14) {
+	if (GetCardRank() > 10) {
+		if (GetCardRank() == 14) {
 			return 11;
 		}
 		else {
@@ -47,31 +47,31 @@ int Card::getPoint() const
 		}
 	}
 	else {
-		return getCardRank();
+		return GetCardRank();
 	}
 }
 
-void Card::setPosition(int x, int y)
+void Card::SetPosition(int x, int y)
 {
-	_x = x;
-	_y = y;
+	m_x = x;
+	m_y = y;
 }
 
-void Card::render() const 
+void Card::Render() const 
 {
-	TextureManager::Instance()->drawTexture(id, _x, _y, width, height, _renderer);
+	TextureManager::Instance()->drawTexture(id, m_x, m_y, width, height, _renderer);
 }
 
-void Card::setRenderer(SDL_Renderer* renderer)
+void Card::SetRenderer(SDL_Renderer* renderer)
 {
 	_renderer = renderer;
 }
 
-std::string Card::toStringSuit() const 
+std::string Card::ToStringSuit() const 
 {
 	std::string suit;
 
-	switch (getCardSuit()) {
+	switch (GetCardSuit()) {
 	case 1:
 		suit = "cardDiamonds";
 		break;
@@ -89,12 +89,12 @@ std::string Card::toStringSuit() const
 		break;
 	}
 
-	std::string result = "assets/cards/" + suit + this->toStringRank(getCardRank()) + ".png";
+	std::string result = "assets/cards/" + suit + this->ToStringRank(GetCardRank()) + ".png";
 
 	return result;
 }
 
-std::string Card::toStringRank(int rank) const 
+std::string Card::ToStringRank(int rank) const 
 {
 	std::string result;
 

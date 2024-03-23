@@ -23,7 +23,7 @@ Card CardDeck::dealCard() {
 	Card dealCard = deckOfCards[_currentCard];
 	_currentCard++;
 
-	std::cout << "Deal card " << dealCard.getCardRank() << " " << dealCard.getCardSuit() << std::endl;
+	std::cout << "Deal card " << dealCard.GetCardRank() << " " << dealCard.GetCardSuit() << std::endl;
 
 	return dealCard;
 }

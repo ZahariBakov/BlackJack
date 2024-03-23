@@ -13,53 +13,59 @@
 
 class Game {
 public:
-	Game();
+	Game() {};
 	~Game();
 
-	bool init(const char* title, int xpos, int ypos, int width, int height, int flags);
-	bool ttf_init();
+	auto Init(const char* title, int xpos, int ypos, int width, int height, int flags) -> bool;
+	auto TtfInit() -> bool;
 
-	void render();
-	void handleEvents();
-	void update();
-	void clean();
+	void Render();
+	void HandleEvents();
+	void Update();
+	void Clean();
 
-	bool isRunning() const;
-	void clickedBtn(int xDown, int yDown, int xUp, int yUp);
+	auto IsRunning() const -> bool;
+	void ClickedBtn(int xDown, int yDown, int xUp, int yUp);
 
 private:
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
-	bool running, isStay, isRound;
-	int mouseDownX, mouseDownY, betFlag;
+	SDL_Window* m_window = nullptr;
+	SDL_Renderer* m_renderer = nullptr;
 
-	SDL_Texture* dealerTexture,
-		* playerTexture,
-		* moneyTexture,
-		* scoreTexture,
-		* dealerScoreTexture,
-		* betTexture,
-		* minBetTexture,
-		* maxBetTexture,
-		* hitBtnTexture,
-		* stayBtnTexture,
-		* minBetBtnTexture,
-		* maxBetBtnTexture,
-		* quitBtnTexture,
-		* okBtnTexture;
+	bool m_running = true;
+	bool m_isStay  = false;
+	bool m_isRound = false;
 
-	SDL_Rect dealerRect,
-		playerRect,
-		moneyRect,
-		scoreRect,
-		dealerScoreRect,
-		betRect,
-		minBetRect,
-		maxBetRect,
-		hitBtnRect,
-		stayBtnRect,
-		minBetBtnRect,
-		maxBetBtnRect,
-		quitBtnRect,
-		okBtnRect;
+	int m_mouseDownX = 0;
+	int m_mouseDownY = 0;
+	int m_betFlag    = 0;
+
+	SDL_Texture* m_dealerTexture      = nullptr;
+	SDL_Texture* m_playerTexture      = nullptr;
+	SDL_Texture* m_moneyTexture       = nullptr;
+	SDL_Texture* m_scoreTexture       = nullptr;
+	SDL_Texture* m_dealerScoreTexture = nullptr;
+	SDL_Texture* m_betTexture         = nullptr;
+	SDL_Texture* m_minBetTexture      = nullptr;
+	SDL_Texture* m_maxBetTexture      = nullptr;
+	SDL_Texture* m_hitBtnTexture      = nullptr;
+	SDL_Texture* m_stayBtnTexture     = nullptr;
+	SDL_Texture* m_minBetBtnTexture   = nullptr;
+	SDL_Texture* m_maxBetBtnTexture   = nullptr;
+	SDL_Texture* m_quitBtnTexture     = nullptr;
+	SDL_Texture* m_okBtnTexture       = nullptr;
+
+	SDL_Rect m_dealerRect      = { 0, 0, 0, 0 };
+	SDL_Rect m_playerRect      = { 0, 0, 0, 0 };
+	SDL_Rect m_moneyRect       = { 0, 0, 0, 0 };
+	SDL_Rect m_scoreRect       = { 0, 0, 0, 0 };
+	SDL_Rect m_dealerScoreRect = { 0, 0, 0, 0 };
+	SDL_Rect m_betRect         = { 0, 0, 0, 0 };
+	SDL_Rect m_minBetRect      = { 0, 0, 0, 0 };
+	SDL_Rect m_maxBetRect      = { 0, 0, 0, 0 };
+	SDL_Rect m_hitBtnRect      = { 0, 0, 0, 0 };
+	SDL_Rect m_stayBtnRect     = { 0, 0, 0, 0 };
+	SDL_Rect m_minBetBtnRect   = { 0, 0, 0, 0 };
+	SDL_Rect m_maxBetBtnRect   = { 0, 0, 0, 0 };
+	SDL_Rect m_quitBtnRect     = { 0, 0, 0, 0 };
+	SDL_Rect m_okBtnRect       = { 0, 0, 0, 0 };
 };
