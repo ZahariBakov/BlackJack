@@ -18,12 +18,12 @@ public:
 	//void increaseScore(int points);/*!< Function that increase the value of score*/
 	//void addCard(CardDeck& deck);
 
-	Card* playerCards;
+	Card* m_playerCards;
 
-	int numberOfCards;
+	int m_numberOfCards;
 
 private:
-	int _money;
-	int _score;
-	int _bet;
+	int m_money;
+	int m_score;
+	int m_bet;
 };

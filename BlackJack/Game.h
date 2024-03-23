@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
@@ -17,7 +15,6 @@ public:
 	~Game();
 
 	auto Init(const char* title, int xpos, int ypos, int width, int height, int flags) -> bool;
-	auto TtfInit() -> bool;
 
 	void Render();
 	void HandleEvents();
@@ -28,6 +25,8 @@ public:
 	void ClickedBtn(int xDown, int yDown, int xUp, int yUp);
 
 private:
+	auto TtfInit() -> bool;
+
 	SDL_Window* m_window = nullptr;
 	SDL_Renderer* m_renderer = nullptr;
 

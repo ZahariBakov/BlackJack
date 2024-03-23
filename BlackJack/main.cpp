@@ -11,7 +11,6 @@ int main(int argc, char* argv[]) {
 	game = new Game();
 
 	game->Init("Come and lose some money!!!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
-	game->TtfInit();
 
 	while (game->IsRunning()) {
 		game->HandleEvents();

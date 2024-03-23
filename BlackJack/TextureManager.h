@@ -5,17 +5,20 @@
 #include <string>
 
 class TextureManager {
-public:
-	bool loadTexture(const char* fileName, std::string id, SDL_Renderer* ren);
+private:
+	TextureManager() {};
 
-	void drawTexture(std::string id, int xpos, int ypos, int width, int height, SDL_Renderer* ren, SDL_RendererFlip flip = SDL_FLIP_NONE);
+public:
+	auto LoadTexture(const char* fileName, std::string id, SDL_Renderer* ren) -> bool;
+
+	void DrawTexture(std::string id, int xpos, int ypos, int width, int height, SDL_Renderer* ren, SDL_RendererFlip flip = SDL_FLIP_NONE);
 	
-	static void drawRecnatgle(SDL_Renderer* renderer, int xpos, int ypos, int width, int height);
+	void DrawRecnatgle(SDL_Renderer* renderer, int xpos, int ypos, int width, int height);
 
 	static TextureManager* Instance();
 
 private:
-	std::map<std::string, SDL_Texture*> textureMap;
-	TextureManager() {}
-	static TextureManager* instance;
+	std::map<std::string, SDL_Texture*> m_textureMap;
+	
+	static TextureManager* m_instance;
 };

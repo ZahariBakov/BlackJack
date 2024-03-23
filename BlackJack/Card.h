@@ -17,7 +17,7 @@ public:
 	void Render() const;
 	void SetRenderer(SDL_Renderer* renderer);
 
-	std::string id;
+	std::string m_id;
 	
 private:
 	int m_suit;

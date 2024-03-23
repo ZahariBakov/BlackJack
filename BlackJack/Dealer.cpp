@@ -1,18 +1,18 @@
 #include "Dealer.h"
 
 Dealer::Dealer(CardDeck* deck) {
-	dealerCards = new Card[2];
-	dealerCards[0] = deck->dealCard();
-	dealerCards[1] = deck->dealCard();
+	m_dealerCards = new Card[2];
+	m_dealerCards[0] = deck->DealCard();
+	m_dealerCards[1] = deck->DealCard();
 
-	numberOfCards = 2;
-	this->score = dealerCards[0].GetPoint();
+	m_numberOfCards = 2;
+	this->m_score = m_dealerCards[0].GetPoint();
 
 	std::cout << "Dealer is created" << std::endl;
 }
 
 Dealer::~Dealer() {
-	delete[] dealerCards;
+	delete[] m_dealerCards;
 }
 
 //void Dealer::increaseScore(int points) {

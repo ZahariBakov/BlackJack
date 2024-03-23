@@ -12,8 +12,10 @@ public:
 	//void increaseScore(int points);
 	//void addCard(CardDeck& deck);
 
-	Card* dealerCards;
+	Card* m_dealerCards;
 
-	int numberOfCards;
-	int score;
+	int m_numberOfCards;
+	int m_score;
+private:
+
 };

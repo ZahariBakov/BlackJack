@@ -1,6 +1,6 @@
 #include "Game.h"
 
-#include <string>
+#include <iostream>
 
 std::string thirdCardName;
 
@@ -29,13 +29,15 @@ bool Game::Init(const char* title, int xpos, int ypos, int width, int height, in
 				std::cout << "Renderer creation success!\n";
 
 				mainDeck = new CardDeck(m_renderer);
-				mainDeck->shuffle();
+				mainDeck->Shuffle();
 
 				player = new Player(mainDeck);
 				dealer = new Dealer(mainDeck);
 				
-				TextureManager::Instance()->loadTexture("assets/table-background.jpg", "background", m_renderer);
-				TextureManager::Instance()->loadTexture("assets/cards/cardBack_blue3.png", "card-back", m_renderer);
+				TextureManager::Instance()->LoadTexture("assets/table-background.jpg", "background", m_renderer);
+				TextureManager::Instance()->LoadTexture("assets/cards/cardBack_blue3.png", "card-back", m_renderer);
+
+				TtfInit();
 			}
 			else {
 				std::cout << "Renderer init failed!\n";
@@ -207,18 +209,18 @@ void Game::Render()
 	int ww, wh;
 	SDL_GetWindowSize(m_window, &ww, &wh);
 
-	TextureManager::Instance()->drawTexture("background", 0, 0, ww, wh, m_renderer);
+	TextureManager::Instance()->DrawTexture("background", 0, 0, ww, wh, m_renderer);
 
 	SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 	SDL_RenderDrawLine(m_renderer, 0, wh / 2, ww, wh / 2);
 
-	TextureManager::Instance()->drawRecnatgle(m_renderer, 10, wh / 2 + 115, 80, 40);
-	TextureManager::Instance()->drawRecnatgle(m_renderer, 10, wh / 2 + 170, 100, 40);
-	TextureManager::Instance()->drawRecnatgle(m_renderer, 10, wh / 2 + 225, 130, 40);
-	TextureManager::Instance()->drawRecnatgle(m_renderer, 160, wh / 2 + 225, 130, 40);
+	TextureManager::Instance()->DrawRecnatgle(m_renderer, 10, wh / 2 + 115, 80, 40);
+	TextureManager::Instance()->DrawRecnatgle(m_renderer, 10, wh / 2 + 170, 100, 40);
+	TextureManager::Instance()->DrawRecnatgle(m_renderer, 10, wh / 2 + 225, 130, 40);
+	TextureManager::Instance()->DrawRecnatgle(m_renderer, 160, wh / 2 + 225, 130, 40);
 	if (!Game::m_isRound) {
-		TextureManager::Instance()->drawRecnatgle(m_renderer, ww - 90, wh / 2 + 225, 80, 40);
-		TextureManager::Instance()->drawRecnatgle(m_renderer, ww - 155, wh / 2 + 225, 50, 40);
+		TextureManager::Instance()->DrawRecnatgle(m_renderer, ww - 90, wh / 2 + 225, 80, 40);
+		TextureManager::Instance()->DrawRecnatgle(m_renderer, ww - 155, wh / 2 + 225, 50, 40);
 	}
 	
 	SDL_RenderCopy(m_renderer, m_dealerTexture, NULL, &m_dealerRect);
@@ -247,17 +249,17 @@ void Game::Render()
 	int x = 180;
 
 	if (!Game::m_isStay) {
-		TextureManager::Instance()->drawTexture(dealer->dealerCards[0].id, x, 30, 140, 190, m_renderer);
-		TextureManager::Instance()->drawTexture("card-back", 210, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].m_id, x, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture("card-back", 210, 30, 140, 190, m_renderer);
 	}
 	else {
-		TextureManager::Instance()->drawTexture(dealer->dealerCards[0].id, x, 30, 140, 190, m_renderer);
-		TextureManager::Instance()->drawTexture(dealer->dealerCards[1].id, x + 30, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[0].m_id, x, 30, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[1].m_id, x + 30, 30, 140, 190, m_renderer);
 	}
 
-	for (int i = 0; i < player->numberOfCards; ++i) {
+	for (int i = 0; i < player->m_numberOfCards; ++i) {
 		x = x + 30 * i;
-		TextureManager::Instance()->drawTexture(player->playerCards[i].id, x, wh - 250, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(player->m_playerCards[i].m_id, x, wh - 250, 140, 190, m_renderer);
 	}
 
 	SDL_RenderPresent(m_renderer);

@@ -3,21 +3,21 @@
 #include <iostream>
 
 Player::Player(CardDeck* deck) {
-	this->_money = 100000;
-	this->_bet = 100;
+	this->m_money = 100000;
+	this->m_bet = 100;
 
-	playerCards = new Card[2];
-	playerCards[0] = deck->dealCard();
-	playerCards[1] = deck->dealCard();
+	m_playerCards = new Card[2];
+	m_playerCards[0] = deck->DealCard();
+	m_playerCards[1] = deck->DealCard();
 
-	numberOfCards = 2;
-	this->_score = playerCards[0].GetPoint() + playerCards[1].GetPoint();
+	m_numberOfCards = 2;
+	this->m_score = m_playerCards[0].GetPoint() + m_playerCards[1].GetPoint();
 
 	std::cout << "Player is created" << std::endl;
 }
 
 Player::~Player() {
-	delete[] playerCards;
+	delete[] m_playerCards;
 }
 
 //int Player::getMoney() const {

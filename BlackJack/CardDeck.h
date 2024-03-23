@@ -8,11 +8,11 @@ class CardDeck {
 public:
 	CardDeck(SDL_Renderer* renderer);
 
-	auto dealCard() -> Card;
-	void shuffle();
+	auto DealCard() -> Card;
+	void Shuffle();
 
-	std::vector<Card> deckOfCards;
+	std::vector<Card> m_deckOfCards;
 
 private:
-	int _currentCard;
+	int m_currentCard;
 };

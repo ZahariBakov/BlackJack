@@ -21,9 +21,9 @@ Card::Card(SDL_Renderer* renderer, int suit, int rank)
 	m_x = 0;
 	m_y = 0;
 	std::string path = ToStringSuit();
-	id = std::to_string(suit) + std::to_string(rank);
+	m_id = std::to_string(suit) + std::to_string(rank);
 
-	TextureManager::Instance()->loadTexture(path.c_str(), id, _renderer);
+	TextureManager::Instance()->LoadTexture(path.c_str(), m_id, _renderer);
 }
 
 int Card::GetCardSuit() const 
@@ -59,7 +59,7 @@ void Card::SetPosition(int x, int y)
 
 void Card::Render() const 
 {
-	TextureManager::Instance()->drawTexture(id, m_x, m_y, width, height, _renderer);
+	TextureManager::Instance()->DrawTexture(m_id, m_x, m_y, width, height, _renderer);
 }
 
 void Card::SetRenderer(SDL_Renderer* renderer)
