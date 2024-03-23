@@ -1,29 +1,32 @@
 #pragma once
 
 #include "CardDeck.h"
-#include <vector>
 
-class Player {
+class Player 
+{
 public:
-	Player(CardDeck* deck);/*!< Default constructor*/
+	Player(CardDeck* deck);
 	~Player();
 
-	//int getMoney() const;/*!< Function that return the value of money*/
-	//int getScore() const;/*!< Function that return the value of score*/
-	//int getBet() const;/*!< Function that return the value of bet*/
+	//int getMoney() const;
+	//int getScore() const;
+	//int getBet() const;
 
-	//void increaseMoney(int profit);/*!< Function that increase the value of money*/
-	//void decreaseMoney(int loss);/*!< Function that decrease the value of money*/
-	//void setBet(bool big);/*!< Function that set the value of bet*/
-	//void increaseScore(int points);/*!< Function that increase the value of score*/
+	//void increaseMoney(int profit);
+	//void decreaseMoney(int loss);
+	//void setBet(bool big);
+	//void increaseScore(int points);
 	//void addCard(CardDeck& deck);
 
-	Card* m_playerCards;
+	auto GetNumberOfCards() const -> int;
 
-	int m_numberOfCards;
+	auto GetCurrentCard(int idx) const -> Card;
 
 private:
-	int m_money;
+	int m_money = 100000;
 	int m_score;
-	int m_bet;
+	int m_bet = 100;
+	int m_numberOfCards = 2;
+
+	Card* m_playerCards;
 };

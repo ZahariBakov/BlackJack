@@ -2,22 +2,30 @@
 
 #include <iostream>
 
-Player::Player(CardDeck* deck) {
-	this->m_money = 100000;
-	this->m_bet = 100;
-
+Player::Player(CardDeck* deck) 
+{
 	m_playerCards = new Card[2];
 	m_playerCards[0] = deck->DealCard();
 	m_playerCards[1] = deck->DealCard();
 
-	m_numberOfCards = 2;
-	this->m_score = m_playerCards[0].GetPoint() + m_playerCards[1].GetPoint();
+	m_score = m_playerCards[0].GetPoint() + m_playerCards[1].GetPoint();
 
 	std::cout << "Player is created" << std::endl;
 }
 
-Player::~Player() {
+Player::~Player() 
+{
 	delete[] m_playerCards;
+}
+
+auto Player::GetNumberOfCards() const -> int
+{
+	return m_numberOfCards;
+}
+
+auto Player::GetCurrentCard(int idx) const -> Card
+{
+	return m_playerCards[idx];
 }
 
 //int Player::getMoney() const {

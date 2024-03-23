@@ -257,9 +257,9 @@ void Game::Render()
 		TextureManager::Instance()->DrawTexture(dealer->m_dealerCards[1].GetId(), x + 30, 30, 140, 190, m_renderer);
 	}
 
-	for (int i = 0; i < player->m_numberOfCards; ++i) {
+	for (int i = 0; i < player->GetNumberOfCards(); ++i) {
 		x = x + 30 * i;
-		TextureManager::Instance()->DrawTexture(player->m_playerCards[i].GetId(), x, wh - 250, 140, 190, m_renderer);
+		TextureManager::Instance()->DrawTexture(player->GetCurrentCard(i).GetId(), x, wh - 250, 140, 190, m_renderer);
 	}
 
 	SDL_RenderPresent(m_renderer);
